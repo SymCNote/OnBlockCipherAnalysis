@@ -73,7 +73,8 @@ $$
 而这里连接的概率为:
 
 $$
-2^{-n} \times &#x23;\{x \in \mathbb{F}_2^n \mid S(x) \oplus S(x \oplus \Delta_i) \oplus S(x \oplus \nabla_o) \oplus S(x \oplus \Delta_i \oplus \nabla_o) = 0\}.
+\newcommand{\hash}{\#}
+2^{-n} \times \hash\{x \in \mathbb{F}_2^n \mid S(x) \oplus S(x \oplus \Delta_i) \oplus S(x \oplus \nabla_o) \oplus S(x \oplus \Delta_i \oplus \nabla_o) = 0\}.
 $$
 
 最终 FBCT 的定义为:
