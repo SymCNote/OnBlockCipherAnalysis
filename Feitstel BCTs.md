@@ -24,4 +24,5 @@ Some information and knowledge about Feistel BCTs
 
 现在分别考虑 $\beta^L$ 和 $\beta^R$:
 
+$\textcircled{1}$
 
