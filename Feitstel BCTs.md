@@ -14,7 +14,7 @@ Some information and knowledge about Feistel BCTs
 
 下图为 Feistel 结构 (classical) 用于解释相关 Connectivity Tables 的图. 其中:
 
-* $L^i,R^i$ 分别表示 4 条路径上输入的 left, right 分支. 以 $L^1,R^1$ 为例, 其加密一轮的结果为 $F(L^1)\oplus R^1 \parallel L^1$. 
+* $L^i,R^i$ 分别表示 (① ② ③ ④) 4 条路径上输入的 left, right 分支. 以 $L^1,R^1$ 为例, 其加密一轮的结果为 $F(L^1)\oplus R^1 \parallel L^1$. 
 * 轮函数 $F$ 是包括 Key Addition, multiple independent Sbox, Linear Layer (但 Linear Layer 对 FBCT 没什么影响, 重要的是 the concatenation of multiple independent Sbox).
 * 该层的输入差分为 $\beta^L \parallel \beta^R$, 输出差分为 $\gamma^L\parallel \gamma^R$ .
 
@@ -24,5 +24,6 @@ Some information and knowledge about Feistel BCTs
 
 现在分别考虑 $\beta^L$ 和 $\beta^R$:
 
-$\textcircled{9}$
+* 对 $\beta^L$:
 
+  
