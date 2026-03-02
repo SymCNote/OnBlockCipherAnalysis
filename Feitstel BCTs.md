@@ -78,5 +78,5 @@ $$
 
 最终 FBCT 的定义为:
 
-<img width="1785" height="219" alt="image" src="https://github.com/user-attachments/assets/a0a3db91-e39b-4ab0-9144-7d4bb7462e62" />
+<img width="1500" height="140" alt="image" src="https://github.com/user-attachments/assets/a0a3db91-e39b-4ab0-9144-7d4bb7462e62" />
 
