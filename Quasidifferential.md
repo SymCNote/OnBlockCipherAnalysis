@@ -63,6 +63,7 @@ something
 
 $$
 \delta_x(y) = \begin{cases} 1, & x=y \\ 
+
 0, & x \neq y \end{cases}
 $$
 
