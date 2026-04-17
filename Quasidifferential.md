@@ -19,7 +19,7 @@ $$
 
 
 $$
-{DDT}_{a,b}^F = |\left\{x \in \mathbb{F}_2^n \mid F(x) + F(x+a) = b\right\}| = 2^n \Pr[F(x) + F(x+a) = b]
+{DDT}_{a,b}^F = |\{x \in \mathbb{F}_2^n \mid F(x) + F(x+a) = b\}| = 2^n \Pr[F(x) + F(x+a) = b]
 $$
 
 这里的假设是 **$x$ 是均匀随机**的, 差分概率 $p\gg 2^{-n}$, 对应数据复杂度 $O(1/p)$.
