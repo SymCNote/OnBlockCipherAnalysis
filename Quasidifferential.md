@@ -8,7 +8,7 @@
 
 ## 差分分析的 强假设
 
-对于一个差分转移：$F:\mathbb{F}_2^n \rightarrow \mathbb{F_2^m}$, 有输入, 输出差分 $(a,b)$, 则:
+对于一个差分转移, $F:\mathbb{F}_2^n \rightarrow \mathbb{F_2^m}$, 有输入, 输出差分 $(a,b)$, 则:
 
 
 $$
@@ -70,14 +70,14 @@ $$
 
 
 
-==由 $\mathbb{F}_2^n$ 的<u>群特征</u>组成 $\mathbb{R[F}_2^n]$ 的一组基, 使*二元域加法与非零乘法群同态*, 任何这样的同态都具有 $\chi_u(x) = (−1)^{u^Tx}$ 的形式，其中 $u\in F_2^n$. 特征 $\chi_u$ 构成 $\mathbb{R[F}_2^n]$ 的正交基, 特别的 $<\chi_u,\chi_v>=2^n\delta_u(v)$, (仅当 $u=v$ 时,值为 $2^n$ 个 1 相加.)==
+IMPORTANT: 由 $\mathbb{F}_2^n$ 的<u>群特征</u>组成 $\mathbb{R[F}_2^n]$ 的一组基, 使*二元域加法与非零乘法群同态*, 任何这样的同态都具有 $\chi_u(x) = (−1)^{u^Tx}$ 的形式. 其中 $u\in F_2^n$. 特征 $\chi_u$ 构成 $\mathbb{R[F}_2^n]$ 的正交基, 特别的 $<\chi_u,\chi_v>=2^n\delta_u(v)$, (仅当 $u=v$ 时,值为 $2^n$ 个 1 相加.)
 
 这种同态的作用, 意义:
 
-* 有限交换群的特征标理论：$\mathbb{F}_2^n$ 是初等阿贝尔 2- 群，其不可约特征标恰好形如 $\chi_u(x) = (−1)^{u^Tx}$.
-* 正交性：$\langle \chi_u,\chi_v \rangle =2^n\delta_u(v)$, 构成正交基.
+* 有限交换群的特征标理论, $\mathbb{F}_2^n$ 是初等阿贝尔 2- 群，其不可约特征标恰好形如 $\chi_u(x) = (−1)^{u^Tx}$.
+* 正交性, $\langle \chi_u,\chi_v \rangle =2^n\delta_u(v)$, 构成正交基.
 
-* **群同态：$\chi_u(x+y)=\chi_u(x)\chi_u(y)$.** (剥离密钥)
+* **群同态, $\chi_u(x+y)=\chi_u(x)\chi_u(y)$.** (剥离密钥)
 
 
 
@@ -290,7 +290,7 @@ x_{21}y_{21} & x_{21}y_{22} & x_{22}y_{21} & x_{22}y_{22}
 $$
 ***Definition. Quasidifferential Transition Matrix*** (其实应该对应线性的相关矩阵)
 
-设 $n, m$ 为正整数，$F : \mathbb{F}_2^n \to \mathbb{F}_2^m$.**准差分转移矩阵** $D^F$ 定义为 $T^F \otimes T^F$ 在定义 3.1 的**准差分基**下的矩阵表示，即：
+设 $n, m$ 为正整数，$F : \mathbb{F}_2^n \to \mathbb{F}_2^m$.**准差分转移矩阵** $D^F$ 定义为 $T^F \otimes T^F$ 在定义 3.1 的**准差分基**下的矩阵表示，即, 
 
 
 $$
@@ -346,6 +346,6 @@ $$
 * 当 $u=v=\vec{0}, D^F_{(0,b),(0,a)}=\frac{\sum_{x\in \mathbb{F}_2^n, x+a=F(x)+b}1}{2^n}$. 这就是 $P_r(a\rightarrow b) = \frac{DDT_{a,b}^F}{2^{-n}}$.
 * 当 $a=b=\vec{0}, D^F_{(0,b),(0,a)} = \frac{\sum_{x\in \mathbb{F}_2^n}(-1)^{u^Tx+v^Ty}}{2^n}=C^F_{u,v}$. 这就是线性相关度.
 
-对 $D^F_{(v,b),(u,a)}$ 有如下性质：
+对 $D^F_{(v,b),(u,a)}$ 有如下性质, 
 
 1. 若 $F$ 是双射，则
