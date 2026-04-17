@@ -8,7 +8,7 @@
 
 ## 差分分析的 强假设
 
-对于一个差分转移：$F:\mathbb{F}_2^n \rightarrow \mathbb{F_2^m}$, 有输入, 输出差分 $(a,b)$, 则:
+对于一个差分转移: $F:\mathbb{F}_2^n \rightarrow \mathbb{F_2^m}$, 有输入, 输出差分 $(a,b)$, 则:
 
 
 $$
