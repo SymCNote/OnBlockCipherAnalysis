@@ -62,7 +62,11 @@ something
 
 
 $$
-\delta_x(y) = \cases{1\qquad x=y\\ 0\qquad x\neq y}
+\delta_x(y) = 
+\begin{cases} 
+1 & \text{if } x = y \\ 
+0 & \text{if } x \neq y 
+\end{cases}
 $$
 
 
