@@ -18,7 +18,8 @@ where $c=(c[n-1],...,c[1],c[0])$ is carry, and is defined recursively as:
 
 
 $$
-\begin{cases} c[0] = x[0] \land y[0], \\ c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1]), & 1 \leq i \leq n-1. \end{cases}
+\begin{cases} c[0] = x[0] \land y[0], \\ 
+c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1]), & 1 \leq i \leq n-1. \end{cases}
 $$
 
 
