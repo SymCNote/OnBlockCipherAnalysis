@@ -219,7 +219,7 @@ Therefore, properties 1 and 2 are equal.
 
 #### ~ Property 3. Sat AddRX Prop on A Lower Set.
 
-Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbrace \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min \lbrace \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min\lbrace_1, l_2\rbrace$, we have:
+Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbrace \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min \lbrace \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min \lbrace_1, l_2\rbrace$, we have:
 
 1. If $l_1 = l_2 = l$, then $\Delta z[i] = 0$ for $0 \leq i \leq l$.
 
