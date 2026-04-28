@@ -219,7 +219,7 @@ Therefore, properties 1 and 2 are equal.
 
 #### ~ Property 3. Sat AddRX Prop on A Lower Set.
 
-Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbrace \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min \lbrace \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min \lbrace_1, l_2\rbrace$, we have:
+Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbrace i \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min\lbrace i \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min\lbrace l_1, l_2\rbrace$, we have:
 
 1. If $l_1 = l_2 = l$, then $\Delta z[i] = 0$ for $0 \leq i \leq l$.
 
@@ -229,7 +229,7 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Sup
 
 * Focus on the lower $l$ bits of the difference on $x,y,z$.
   * For 1. the carry is propagated from the lower position to the higher one, so *the impact of carry will not appear until the first common 1-differential position*.
-  * For 2. "$\Delta z[i] = 0$ for $0 \leq i \leq l-1$" is the same as 1. And for the first $(1,0)/(0,1)$ pair of $(\Delta x[l],\Delta y[l])$, there is no carry impact on $\Delta z[l]$, so $\Delta z[l]=\Delta x[l] \oplus \Delta y[l] = 1$.
+  * For 2. ($\Delta z[i] = 0$ for $0 \leq i \leq l-1$) is the same as 1. And for the first $(1,0)/(0,1)$ pair of $(\Delta x[l],\Delta y[l])$, there is no carry impact on $\Delta z[l]$, so $\Delta z[l]=\Delta x[l] \oplus \Delta y[l] = 1$.
 
 #### ~ Property 4. Condition for $(0,0) \rightarrow 0$
 
