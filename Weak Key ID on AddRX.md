@@ -8,8 +8,7 @@ Let $x \boxplus y \rightarrow z$,
 
 
 $$
-\begin{cases} z[0] = x[0] \oplus y[0], \\ 
-z[i] = x[i] \oplus y[i] \oplus c[i-1], \quad 1 \leq i \leq n-1. \end{cases}
+\begin{cases} z[0] = x[0] \oplus y[0], \\ z[i] = x[i] \oplus y[i] \oplus c[i-1], \quad 1 \leq i \leq n-1. \end{cases}
 $$
 
 
@@ -18,8 +17,7 @@ where $c=(c[n-1],...,c[1],c[0])$ is carry, and is defined recursively as:
 
 
 $$
-\begin{cases} c[0] = x[0] \land y[0], \\ 
-c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1]), & 1 \leq i \leq n-1. \end{cases}
+\begin{cases} c[0] = x[0] \land y[0], \\ c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1]), & 1 \leq i \leq n-1. \end{cases}
 $$
 
 
@@ -58,7 +56,6 @@ for dz in sorted(results.keys()):
 #### ~ Property 1. Sat AddRX Prop on Word
 
 Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed **n-bit XOR differences**. The differential ($\Delta x \boxplus \Delta y \rightarrow \Delta z$) passing modular addition <u>is possible</u> if and only if: 
-
 $$
 (\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1) \land (\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1)) = 0,\\
 \text{where } eq(x,y,z)=(\neg x \oplus y) \land (\neg x \oplus z))\ \text{is equal to 1 iff. } (x=y=z)
@@ -123,7 +120,6 @@ predicate xor4(var int: a, var int: b, var int: c, var int: d) =
 #### ~ Property 2. Sat AddRX Prop on Bit
 
 Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. The differential $\Delta x \boxplus \Delta y \rightarrow \Delta z$ passing modular addition is possible if and only if 
-
 $$
 \Delta x[0] \oplus \Delta y[0] \oplus \Delta z[0] = 0
 $$
@@ -223,7 +219,7 @@ Therefore, properties 1 and 2 are equal.
 
 #### ~ Property 3. Sat AddRX Prop on A Lower Set.
 
-Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbracei \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min\lbracei \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min\lbracel_1, l_2\rbrace$, we have:
+Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbrace \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min\lbrace \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min\lbrace_1, l_2\rbrace$, we have:
 
 1. If $l_1 = l_2 = l$, then $\Delta z[i] = 0$ for $0 \leq i \leq l$.
 
