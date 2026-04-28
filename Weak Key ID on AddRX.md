@@ -233,11 +233,20 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Sup
 
 #### ~ Property 4. Condition for $(0,0) \rightarrow 0$
 
+Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences, where $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$ and $\Delta z = z \oplus z'$. Suppose the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $\Delta x = \Delta y = (0 \cdots 0 ({1}_{pos=l}) 0 \cdots 0)$, then $\Delta z = (0 \cdots 0)$ if and only if $x[l] \neq y[l]$ or $x'[l] \neq y'[l]$.
 
+* The point is considering when the carry appears in the **value** (instead of the difference).
 
+  * Let $x[l]$ be the bit position of value $x$, so we have the following table:
 
+    | $(x[l],x'[l])$ | $(y[l],y'[l])$ | $(z[l],z'[l])$ | $\Delta z[l]$ | $(z[l+1],z'[l+1])$ | $\Delta z[l+1]$ |
+    | :------------: | :------------: | :------------: | :-----------: | :----------------: | :-------------: |
+    |     (0,1)      |     (0,1)      |     (0,0)      |       0       |       (0,1)        |        1        |
+    |     (0,1)      |     (1,0)      |     (1,1)      |       0       |       (0,0)        |        0        |
+    |     (1,0)      |     (0,1)      |     (1,1)      |       0       |       (0,0)        |        0        |
+    |     (1,0)      |     (1,0)      |     (0,0)      |       0       |       (1,0)        |        1        |
 
-
+    That is, when $x[l] = y[l]$ or $x'[l] = y'[l]$, there is a carry on the higher one bit of $z[l]$ or $z'[l]$, thereby bringing $1$ to $\Delta z[l+1]$.
 
 
 
