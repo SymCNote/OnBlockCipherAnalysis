@@ -9,7 +9,6 @@ Let $x \boxplus y \rightarrow z$,
 
 $$
 \begin{cases} z[0] = x[0] \oplus y[0], \\ 
-
 z[i] = x[i] \oplus y[i] \oplus c[i-1], \quad 1 \leq i \leq n-1. \end{cases}
 $$
 
