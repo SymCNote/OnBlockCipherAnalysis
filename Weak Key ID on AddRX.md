@@ -53,7 +53,7 @@ for dz in sorted(results.keys()):
 
 
 
-#### **~ Property 1.** Sat AddRX Prop on Word
+#### ~ Property 1. Sat AddRX Prop on Word
 
 Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed **n-bit XOR differences**. The differential ($\Delta x \boxplus \Delta y \rightarrow \Delta z$) passing modular addition <u>is possible</u> if and only if: 
 $$
@@ -190,6 +190,7 @@ constraint dZint = 6;
 #### ! Connect Property 1 and 2 (explanation of Property 1)
 
 To understand property 1 in relation to property 2.
+
 $$
 \begin{aligned}
 eq(\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1) \land (\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1)) = 0,\qquad & (property. 1)\\
@@ -199,12 +200,14 @@ $$
 
 
 For a string $x$, $x \ll 1$ means picking up positions $x[0..(n-1)]$. 
+
 $$
 eq(\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1) \Leftrightarrow x[i-1]=y[i-1]=z[i-1],\quad 1<i<n-1
 $$
+
 Then the tables of property 2 can be followed.
 
-Let $EQ = eq(\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1)$, so $EQ\in\{0,1\}$.
+Let $EQ = eq(\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1)$, so $EQ\in\lbrace0,1\rbrace$.
 
 If $EQ=0$, no carry impacts the previous one bit. To satisfy $0$-result, $(\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1))$ is free. 
 
@@ -216,7 +219,7 @@ Therefore, properties 1 and 2 are equal.
 
 #### ~ Property 3. Sat AddRX Prop on A Lower Set.
 
-Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\{i \mid \Delta x[i] = 1,\ 0 \leq i \leq n\}$, $l_2 = \min\{i \mid \Delta y[i] = 1,\ 0 \leq i \leq n\}$ and $l = \min\{l_1, l_2\}$, we have:
+Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Suppose that the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $l_1 = \min\lbracei \mid \Delta x[i] = 1,\ 0 \leq i \leq n\rbrace$, $l_2 = \min\lbracei \mid \Delta y[i] = 1,\ 0 \leq i \leq n\rbrace$ and $l = \min\lbracel_1, l_2\rbrace$, we have:
 
 1. If $l_1 = l_2 = l$, then $\Delta z[i] = 0$ for $0 \leq i \leq l$.
 
@@ -229,7 +232,6 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Sup
   * For 2. "$\Delta z[i] = 0$ for $0 \leq i \leq l-1$" is the same as 1. And for the first $(1,0)/(0,1)$ pair of $(\Delta x[l],\Delta y[l])$, there is no carry impact on $\Delta z[l]$, so $\Delta z[l]=\Delta x[l] \oplus \Delta y[l] = 1$.
 
 #### ~ Property 4. Condition for $(0,0) \rightarrow 0$
-
 
 
 
