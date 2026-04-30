@@ -308,7 +308,7 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
      * $\Delta z = \Delta x \boxplus \Delta y$
 
-       $(\Delta x[3] = \Delta y[3] = \Delta z[3] = 0) =  (\Delta x[4] \oplus \Delta y[4] \oplus \Delta z[4]=1\oplus \Delta z[4])$, i.e. $\Delta z[4] = 1$.
+       $(\Delta x[3] = \Delta y[3] = \Delta z[3] = 0) =  (\Delta x[4] \oplus \Delta y[4] \oplus \Delta z[4]=1\oplus \Delta z[4])$, i.e., $\Delta z[4] = 1$.
 
      Here we meet a contradiction.
 
