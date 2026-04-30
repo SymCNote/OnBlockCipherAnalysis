@@ -2,7 +2,7 @@
 
 ### Addition Modulo $2^n$
 
-#### ~ Definition 1 Add Modulo $2^n$
+#### ! Definition 1. Add Modulo $2^n$
 
 Let $x \boxplus y \rightarrow z$,
 
@@ -21,7 +21,6 @@ $$
 \begin{cases} c[0] = x[0] \land y[0], \\ 
 c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1]), & 1 \leq i \leq n-1. \end{cases}
 $$
-
 
 **To check “non-linearity" operation "Add":**
 
@@ -64,9 +63,11 @@ $$
 \text{where } eq(x,y,z)=(\neg x \oplus y) \land (\neg x \oplus z))\ \text{is equal to 1 iff. } (x=y=z)
 $$
 
-* $eq(x,y,z)$ means $x=y=z$, and $(\Delta y \ll 1)$ in $\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1)$ can be replaced by $\Delta x(or\ z)$
+* $eq(x,y,z)$ is a 4-bit vector, and $(\Delta y \ll 1)$ in $\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1)$ can be replaced by $\Delta x(or\ z)$
 
 * All the operations in the above equation are **bit-wise** operations.
+
+* Let $A=(\Delta x \ll 1, \Delta y \ll 1, \Delta z \ll 1)$, $B=(\Delta x \oplus \Delta y \oplus \Delta z \oplus (\Delta y \ll 1)) = 0$, then $A[i] \land B[i] = 0$ for all $i$.
 
 * **Non-linearity**: For the fixed input difference, **many** output differences will satisfy.
 
@@ -235,7 +236,7 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences. Sup
   * For 1. the carry is propagated from the lower position to the higher one, so *the impact of carry will not appear until the first common 1-differential position*.
   * For 2. ($\Delta z[i] = 0$ for $0 \leq i \leq l-1$) is the same as 1. And for the first $(1,0)/(0,1)$ pair of $(\Delta x[l],\Delta y[l])$, there is no carry impact on $\Delta z[l]$, so $\Delta z[l]=\Delta x[l] \oplus \Delta y[l] = 1$.
 
-#### ~ Property 4. Condition for $(0,0) \rightarrow 0$
+#### ~ Property 4. Condition for $(x\boxplus y) \rightarrow 0$
 
 Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences, where $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$ and $\Delta z = z \oplus z'$. Suppose the differential $(\Delta x \boxplus \Delta y \to \Delta z)$ passing modular addition is possible. If $\Delta x = \Delta y = (0 \cdots 0 ({1}_{pos=l}) 0 \cdots 0)$, then $\Delta z = (0 \cdots 0)$ if and only if $x[l] \neq y[l]$ or $x'[l] \neq y'[l]$.
 
@@ -253,5 +254,63 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences, whe
     That is, when $x[l] = y[l]$ or $x'[l] = y'[l]$, there is a carry on the higher one bit of $z[l]$ or $z'[l]$, thereby bringing $1$ to $\Delta z[l+1]$.
 
 
-<img width="1280" height="1815" alt="4100ad187940f25a6dc140047e88a15f" src="https://github.com/user-attachments/assets/1ece1c1a-c6f0-44ad-a6a1-2e671df8fc72" />
+
+---
+
+New in this paper
+
+---
+
+
+
+#### ~ Property 5. Modulo Subtraction $0 \leftarrow (z\boxminus y)$ 
+
+Let $x = z \oplus y$ and $x' = z' \oplus y'$, where $x, y, z, x', y', z' \in \mathbb{F}_2^n$. Suppose that $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$ and $\Delta z = z \oplus z'$. If $\Delta z = \Delta y = (0 \cdots 0\ (1_{pos=l})\ 0 \cdots 0)$, $0\le l\le n-1$, then $\Delta x = (0 \cdots 0)$ if and only if $z[l] = y[l]$ or $z'[l] = y'[l]$.
+
+
+
+* There is a simple way to prove this property:
+
+  consider the bits around position $l$, ($l$ and $l-1$) from $\Delta x = 0$, $\Delta y[l] = \Delta z[l] = 1$, we enumerate the possible values at position $l$ of $z,y$ , and $x$ as follows:
+
+  | $(z[l],z'[l])$ | $(y[l],y'[l])$ | $(x[l],x'[l])$ | $borrow[l+1],borrow'[l+1]$ | $\Delta X[l]=0$ |
+  | :------------: | :------------: | :------------: | :------------------------: | :-------------: |
+  |     (0,1)      |     (0,1)      |     (0,0)      |           (0,0)            |        Y        |
+  |     (0,1)      |     (1,0)      |     (0,1)      |           (1,0)            |        N        |
+  |     (1,0)      |     (0,1)      |     (1,0)      |           (0,1)            |        N        |
+  |     (1,0)      |     (1,0)      |     (0,0)      |           (0,0)            |        Y        |
+
+	That is when $y[l] \neq z[l]$ nor $y'[l] \neq z'[l]$, on one hand, $\Delta x[l]\neq 0$; on the other hand, it must borrow 1 from the previous position, which means the previous bit has at least one non-zero difference.
+
+
+
+#### ~ Property 6. 
+
+Let $z = x \oplus y$, $z' = x' \oplus y'$, $h = z \oplus g$ and $h' = z' \oplus g'$, where $x, y, z, g, h, x', y', z', g', h' \in \mathbb{F}_2^5$. Suppose that $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$, $\Delta z = z \oplus z'$, $\Delta g = g \oplus g'$ and $\Delta h = h \oplus h'$. If $\Delta z[2:1] \neq 00$, then we have  
+
+
+$$
+(\Delta x = 1000*, \ \Delta y = 00***, \ \Delta g = 0000* \ \to \ \Delta h = 00***).
+$$
+
+
+Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
+
+1. By (property 2), not property 1.
+
+   From property 2., we have "if $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1]$, then the differential propagation satisfies $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1] = \Delta x[i] \oplus \Delta y[i] \oplus \Delta z[i], \quad \text{for } 1 \leq i \leq n-1.$"
+
+   * Suppose $\Delta z[3] = 0$, then the condition $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1]$ is satisfied, for $i=4$, so there are two equations:
+
+     * $\Delta h = \Delta z \boxplus \Delta g$
+
+       $(\Delta z[3] = \Delta g[3] = \Delta h[3] = 0) =  (\Delta z[4] \oplus \Delta g[4] \oplus \Delta h[4]=0\oplus \Delta z[4])$, i.e., $\Delta z[4] = 0$.
+
+     * $\Delta z = \Delta x \boxplus \Delta y$
+
+       $(\Delta x[3] = \Delta y[3] = \Delta z[3] = 0) =  (\Delta x[4] \oplus \Delta y[4] \oplus \Delta z[4]=1\oplus \Delta z[4])$, i.e. $\Delta z[4] = 1$.
+
+     Here we meet a contradiction.
+
+
 
