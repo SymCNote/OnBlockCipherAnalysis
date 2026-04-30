@@ -253,4 +253,5 @@ Let $\Delta x$, $\Delta y$, and $\Delta z$ be fixed $n$-bit XOR differences, whe
     That is, when $x[l] = y[l]$ or $x'[l] = y'[l]$, there is a carry on the higher one bit of $z[l]$ or $z'[l]$, thereby bringing $1$ to $\Delta z[l+1]$.
 
 
+<img width="1280" height="1815" alt="4100ad187940f25a6dc140047e88a15f" src="https://github.com/user-attachments/assets/1ece1c1a-c6f0-44ad-a6a1-2e671df8fc72" />
 
