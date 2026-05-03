@@ -336,10 +336,8 @@ $$
 \Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
 $$
 
+  * for $\Delta (x[2] \land y[2])$,
 
-* for $\Delta (x[2] \land y[2])$,
-
-  ​      
 $$
 \begin{aligned}
 & \Delta (x[2] \land y[2]) \\
@@ -352,9 +350,8 @@ x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 \end{aligned}
 $$
 
-* for $\Delta (x[2] \land c[1])$,
+  * for $\Delta (x[2] \land c[1])$,
    
-        
 $$
 \begin{aligned}
 & \Delta (x[2] \land c_1[1])\\
@@ -367,9 +364,8 @@ x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
 \end{aligned}
 $$
 
-* for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
-
-  ​      
+  * for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
+     
 $$
 \begin{aligned}
 & \Delta (y[2] \land c_1[1])\\
@@ -382,7 +378,7 @@ c_1[1]\land \Delta y[2] = c_1[1],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 $$
 
 
-Finally,
+  Finally,
 
 
 $$
@@ -396,9 +392,7 @@ x[2] \oplus 0 \oplus c_1[1] = x[2] \oplus c_1[1], if\ \Delta y[2] = 1\ (\Delta c
 \end{aligned}
 $$
 
-
-And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
-
+  And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
 $$
 \begin{aligned}
@@ -410,9 +404,7 @@ y[2] \land (x[2] \oplus c_1[1]) \oplus 1 = y[2],\ \ \,if\ \Delta y[2] = 1\ (\Del
 \end{aligned}
 $$
 
-
-And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
-
+  And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
 
 $$
 z[2] =\cases{
@@ -421,9 +413,7 @@ y[2] = c_1[2],\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta 
 }
 $$
 
+  Finally, we obtain **the combined result $z[2] = c_1[2]$.**
 
-Finally, we obtain **the combined result $z[2] = c_1[2]$.**
 
-
-​        
 
