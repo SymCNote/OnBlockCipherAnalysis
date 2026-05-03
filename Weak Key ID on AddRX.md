@@ -311,29 +311,35 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
        $(\Delta x[3] = \Delta y[3] = \Delta z[3] = 0) =  (\Delta x[4] \oplus \Delta y[4] \oplus \Delta z[4]=1\oplus \Delta z[4])$, i.e., $\Delta z[4] = 1$.
 
      Here we meet a contradiction. **Therefore, $\Delta z[3] = 1$.**
+     
+     
 
 2. From definition 1. ($\Delta z[i] = \Delta x \oplus \Delta y \oplus \Delta carry[i]$), there are two equations for $carry_1[2]$ and $carry_2[2]$:
 
    * $\Delta z[i] = \Delta x[i] \oplus \Delta y[i] \oplus \Delta c_1[i - 1].$ That is $\Delta z[3] = \Delta x[3] \oplus \Delta y[3] \oplus \Delta c_1[2]$, **therefore, $\Delta c_1[2]=1$.**
    * $\Delta h[i] = \Delta z[i] \oplus \Delta g[i] \oplus \Delta c_2[i - 1].$ That is $\Delta h[3] = \Delta z[3] \oplus \Delta g[3] \oplus \Delta c_2[2]$, **therefore, $\Delta c_2[2] = 1$.**
 
+   
+
 3. For $\Delta z[2]$:
 
-   1. If $\Delta z[2] = 0$, (we have $\Delta x[2]=0$), $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
+   **CASE-1. $\Delta z[2] = 0$**. 
 
-      That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
+   we have $\Delta x[2]=0$, $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
 
-      From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+  That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
 
-      
+  From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+
+
 $$
 \Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
 $$
-      
 
-      * for $\Delta (x[2] \land y[2])$,
 
-        
+* for $\Delta (x[2] \land y[2])$,
+
+  ​      
 $$
 \begin{aligned}
 & \Delta (x[2] \land y[2]) \\
@@ -345,9 +351,9 @@ x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 }
 \end{aligned}
 $$
-        
-      * for $\Delta (x[2] \land c[1])$,
-      
+
+* for $\Delta (x[2] \land c[1])$,
+   
         
 $$
 \begin{aligned}
@@ -360,10 +366,10 @@ x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
 }
 \end{aligned}
 $$
-        
-      * for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
 
-        
+* for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
+
+  ​      
 $$
 \begin{aligned}
 & \Delta (y[2] \land c_1[1])\\
@@ -374,11 +380,11 @@ c_1[1]\land \Delta y[2] = c_1[1],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 }
 \end{aligned}
 $$
-        
-      
-        Finally,
 
-        
+
+Finally,
+
+
 $$
 \begin{aligned}
 & \Delta c[2] =1\\
@@ -389,11 +395,11 @@ x[2] \oplus 0 \oplus c_1[1] = x[2] \oplus c_1[1], if\ \Delta y[2] = 1\ (\Delta c
 }
 \end{aligned}
 $$
-        
-      
-        And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
-        
+
+And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+
+
 $$
 \begin{aligned}
 & c_1[2] = (x[2] \land y[2]) \oplus (x[2] \land c_1[1]) \oplus (y[2] \land c_1[1])\\
@@ -403,11 +409,11 @@ y[2] \land (x[2] \oplus c_1[1]) \oplus 1 = y[2],\ \ \,if\ \Delta y[2] = 1\ (\Del
 }
 \end{aligned}
 $$
-        
-      
-        And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
 
-        
+
+And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
+
+
 $$
 z[2] =\cases{
 c_1[1] = c_1[2],\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
