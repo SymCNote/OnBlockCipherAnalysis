@@ -323,102 +323,101 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
       That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
 
-      From Definition 1 ($c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$), we have:
+      From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
       
-      $$
-      \Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
-      $$
+$$
+\Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
+$$
       
 
       * for $\Delta (x[2] \land y[2])$,
 
         
-        $$
-        \begin{aligned}
-        & \Delta (x[2] \land y[2]) \\
-        & =(x[2] \land y[2]) \oplus (x'[2] \land y'[2])\\
-        & =x[2] \land \Delta y[2],\ where\ x[2] = x'[2]\ since\ \Delta x[2] = 0\\
-        & = \cases{
-        0,\ \ \ \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
-        }
-        \end{aligned}
-        $$
+$$
+\begin{aligned}
+& \Delta (x[2] \land y[2]) \\
+& =(x[2] \land y[2]) \oplus (x'[2] \land y'[2])\\
+& =x[2] \land \Delta y[2],\ where\ x[2] = x'[2]\ since\ \Delta x[2] = 0\\
+& = \cases{
+0,\ \ \ \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+}
+\end{aligned}
+$$
         
-
       * for $\Delta (x[2] \land c[1])$,
-
+      
         
-        $$
-        \begin{aligned}
-        & \Delta (x[2] \land c_1[1])\\
-        & = (x[2] \land c_1[1]) \oplus (x'[2] \land c'_1[1])\\
-        & = x[2] \land \Delta c_1[1]\\
-        & = \cases{
-        x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        0,\ \ \ \ \ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
-        }
-        \end{aligned}
-        $$
+$$
+\begin{aligned}
+& \Delta (x[2] \land c_1[1])\\
+& = (x[2] \land c_1[1]) \oplus (x'[2] \land c'_1[1])\\
+& = x[2] \land \Delta c_1[1]\\
+& = \cases{
+x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+0,\ \ \ \ \ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+}
+\end{aligned}
+$$
         
-
       * for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
 
         
-        $$
-        \begin{aligned}
-        & \Delta (y[2] \land c_1[1])\\
-        & = (y[2] \land c_1[1]) \oplus (y'[2] \land c_1'[1])\\
-        & = \cases{
-        y[2]\land \Delta c[1] = y[2],\ \ \ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        c_1[1]\land \Delta y[2] = c_1[1],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
-        }
-        \end{aligned}
-        $$
+$$
+\begin{aligned}
+& \Delta (y[2] \land c_1[1])\\
+& = (y[2] \land c_1[1]) \oplus (y'[2] \land c_1'[1])\\
+& = \cases{
+y[2]\land \Delta c[1] = y[2],\ \ \ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+c_1[1]\land \Delta y[2] = c_1[1],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+}
+\end{aligned}
+$$
         
-
+      
         Finally,
 
         
-        $$
-        \begin{aligned}
-        & \Delta c[2] =1\\
-        & = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])\\
-        & = \cases{
-        0\oplus x[2] \oplus y[2] = x[2] \oplus y[2], \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        x[2] \oplus 0 \oplus c_1[1] = x[2] \oplus c_1[1], if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
-        }
-        \end{aligned}
-        $$
+$$
+\begin{aligned}
+& \Delta c[2] =1\\
+& = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])\\
+& = \cases{
+0\oplus x[2] \oplus y[2] = x[2] \oplus y[2], \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+x[2] \oplus 0 \oplus c_1[1] = x[2] \oplus c_1[1], if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
+}
+\end{aligned}
+$$
         
-
+      
         And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
         
-        $$
-        \begin{aligned}
-        & c_1[2] = (x[2] \land y[2]) \oplus (x[2] \land c_1[1]) \oplus (y[2] \land c_1[1])\\
-        & c_1[2] = \cases{
-        1\oplus c_1[1] \land (x[2] \oplus y[2]) = c_1[1],\ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        y[2] \land (x[2] \oplus c_1[1]) \oplus 1 = y[2],\ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
-        }
-        \end{aligned}
-        $$
+$$
+\begin{aligned}
+& c_1[2] = (x[2] \land y[2]) \oplus (x[2] \land c_1[1]) \oplus (y[2] \land c_1[1])\\
+& c_1[2] = \cases{
+1\oplus c_1[1] \land (x[2] \oplus y[2]) = c_1[1],\ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+y[2] \land (x[2] \oplus c_1[1]) \oplus 1 = y[2],\ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
+}
+\end{aligned}
+$$
         
-
+      
         And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
 
         
-        $$
-        z[2] =\cases{
-        c_1[1] = c_1[2],\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-        y[2] = c_1[2],\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
-        }
-        $$
-        
+$$
+z[2] =\cases{
+c_1[1] = c_1[2],\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+y[2] = c_1[2],\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+}
+$$
 
-        Finally, we obtain **the combined result $z[2] = c_1[2]$.**
 
-        
+Finally, we obtain **the combined result $z[2] = c_1[2]$.**
+
+
+​        
 
