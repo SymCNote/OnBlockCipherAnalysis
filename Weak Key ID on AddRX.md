@@ -327,9 +327,9 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
    we have $\Delta x[2]=0$, $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
 
-  That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
+   That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
 
-  From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+   From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
 
 $$
