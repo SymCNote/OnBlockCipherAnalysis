@@ -284,7 +284,7 @@ Let $x = z \oplus y$ and $x' = z' \oplus y'$, where $x, y, z, x', y', z' \in \ma
 
 
 
-#### ~ Property 6. 
+#### ~ Property 6. 5-bit ID
 
 Let $z = x \oplus y$, $z' = x' \oplus y'$, $h = z \oplus g$ and $h' = z' \oplus g'$, where $x, y, z, g, h, x', y', z', g', h' \in \mathbb{F}_2^5$. Suppose that $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$, $\Delta z = z \oplus z'$, $\Delta g = g \oplus g'$ and $\Delta h = h \oplus h'$. If $\Delta z[2:1] \neq 00$, then we have  
 
@@ -300,7 +300,7 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
    From property 2., we have "if $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1]$, then the differential propagation satisfies $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1] = \Delta x[i] \oplus \Delta y[i] \oplus \Delta z[i], \quad \text{for } 1 \leq i \leq n-1.$"
 
-   * Suppose $\Delta z[3] = 0$, then the condition $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1]$ is satisfied, for $i=4$, so there are two equations:
+   * Suppose $\Delta z[3] = 0$, then the condition $\Delta x[i-1] = \Delta y[i-1] = \Delta z[i-1]$ is satisfied for $i=4$, so there are two equations:
 
      * $\Delta h = \Delta z \boxplus \Delta g$
 
@@ -310,7 +310,115 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
        $(\Delta x[3] = \Delta y[3] = \Delta z[3] = 0) =  (\Delta x[4] \oplus \Delta y[4] \oplus \Delta z[4]=1\oplus \Delta z[4])$, i.e., $\Delta z[4] = 1$.
 
-     Here we meet a contradiction.
+     Here we meet a contradiction. **Therefore, $\Delta z[3] = 1$.**
 
+2. From definition 1. ($\Delta z[i] = \Delta x \oplus \Delta y \oplus \Delta carry[i]$), there are two equations for $carry_1[2]$ and $carry_2[2]$:
 
+   * $\Delta z[i] = \Delta x[i] \oplus \Delta y[i] \oplus \Delta c_1[i - 1].$ That is $\Delta z[3] = \Delta x[3] \oplus \Delta y[3] \oplus \Delta c_1[2]$, **therefore, $\Delta c_1[2]=1$.**
+   * $\Delta h[i] = \Delta z[i] \oplus \Delta g[i] \oplus \Delta c_2[i - 1].$ That is $\Delta h[3] = \Delta z[3] \oplus \Delta g[3] \oplus \Delta c_2[2]$, **therefore, $\Delta c_2[2] = 1$.**
+
+3. For $\Delta z[2]$:
+
+   1. If $\Delta z[2] = 0$, (we have $\Delta x[2]=0$), $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
+
+      That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
+
+      From Definition 1 ($c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$), we have:
+
+      
+      $$
+      \Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
+      $$
+      
+
+      * for $\Delta (x[2] \land y[2])$,
+
+        
+        $$
+        \begin{aligned}
+        & \Delta (x[2] \land y[2]) \\
+        & =(x[2] \land y[2]) \oplus (x'[2] \land y'[2])\\
+        & =x[2] \land \Delta y[2],\ where\ x[2] = x'[2]\ since\ \Delta x[2] = 0\\
+        & = \cases{
+        0,\ \ \ \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+        }
+        \end{aligned}
+        $$
+        
+
+      * for $\Delta (x[2] \land c[1])$,
+
+        
+        $$
+        \begin{aligned}
+        & \Delta (x[2] \land c_1[1])\\
+        & = (x[2] \land c_1[1]) \oplus (x'[2] \land c'_1[1])\\
+        & = x[2] \land \Delta c_1[1]\\
+        & = \cases{
+        x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        0,\ \ \ \ \ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+        }
+        \end{aligned}
+        $$
+        
+
+      * for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
+
+        
+        $$
+        \begin{aligned}
+        & \Delta (y[2] \land c_1[1])\\
+        & = (y[2] \land c_1[1]) \oplus (y'[2] \land c_1'[1])\\
+        & = \cases{
+        y[2]\land \Delta c[1] = y[2],\ \ \ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        c_1[1]\land \Delta y[2] = c_1[1],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+        }
+        \end{aligned}
+        $$
+        
+
+        Finally,
+
+        
+        $$
+        \begin{aligned}
+        & \Delta c[2] =1\\
+        & = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])\\
+        & = \cases{
+        0\oplus x[2] \oplus y[2] = x[2] \oplus y[2], \ \ \,if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        x[2] \oplus 0 \oplus c_1[1] = x[2] \oplus c_1[1], if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
+        }
+        \end{aligned}
+        $$
+        
+
+        And from $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+
+        
+        $$
+        \begin{aligned}
+        & c_1[2] = (x[2] \land y[2]) \oplus (x[2] \land c_1[1]) \oplus (y[2] \land c_1[1])\\
+        & c_1[2] = \cases{
+        1\oplus c_1[1] \land (x[2] \oplus y[2]) = c_1[1],\ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        y[2] \land (x[2] \oplus c_1[1]) \oplus 1 = y[2],\ \ \,if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)\\
+        }
+        \end{aligned}
+        $$
+        
+
+        And consider $z[2]=x[2] \oplus y[2] \oplus c_1[1]$.
+
+        
+        $$
+        z[2] =\cases{
+        c_1[1] = c_1[2],\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+        y[2] = c_1[2],\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+        }
+        $$
+        
+
+        Finally, we obtain **the combined result $z[2] = c_1[2]$.**
+
+        
 
