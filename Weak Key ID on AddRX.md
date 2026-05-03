@@ -284,7 +284,7 @@ Let $x = z \oplus y$ and $x' = z' \oplus y'$, where $x, y, z, x', y', z' \in \ma
 
 
 
-#### ~ Property 6. 5-bit ID
+### ~ Property 6. 5-bit ID
 
 Let $z = x \oplus y$, $z' = x' \oplus y'$, $h = z \oplus g$ and $h' = z' \oplus g'$, where $x, y, z, g, h, x', y', z', g', h' \in \mathbb{F}_2^5$. Suppose that $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$, $\Delta z = z \oplus z'$, $\Delta g = g \oplus g'$ and $\Delta h = h \oplus h'$. If $\Delta z[2:1] \neq 00$, then we have  
 
@@ -323,9 +323,9 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
 3. For $\Delta z[2]$:
 
-**CASE-1. $\Delta z[2] = 1$**. 
+#### **CASE-1. $\Delta z[2] = 1$**. 
 
-**CASE-1.1, for $\Delta x \boxplus \Delta y = \Delta z$.**
+##### **CASE-1.1, for $\Delta x \boxplus \Delta y = \Delta z$.**
 
 we have $\Delta x[2]=1$, $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
 
@@ -419,7 +419,7 @@ $$
 
 
 
-**CASE 1.2, for $\Delta z \boxplus \Delta g = \Delta h$.**
+##### **CASE 1.2, for $\Delta z \boxplus \Delta g = \Delta h$.**
 
 we have $\Delta z[2]=1$, $\Delta g[2]=0$, $\Delta c_2[2] = 1$, $\Delta h[2] = \Delta z[2] \oplus \Delta g[2] \oplus \Delta c_2[1]\Rightarrow \Delta h[2] = \Delta c_1[ 1] + 1$.
 
@@ -515,3 +515,85 @@ $$
 **So the combination results $c_2[2] = z[2]$.**
 
 **For CASE 1.1 and CASE 1.2, we have $c_2[2] = z[2] = c_1[2] \oplus 1$.**
+
+
+
+Furthermore, find contradiction using $\Delta z[4]$
+
+
+$$
+(\Delta x = 1000*, \ \Delta y = 00***, \ \Delta g = 0000* \ \to \ \Delta h = 00***).
+$$
+
+
+###### **CASE-1.1.1 $\Delta z[4] = 1$.**
+
+
+
+$\Delta z[4] = \Delta x[4] \oplus \Delta y[4] \oplus \Delta c_1[3] \rightarrow \Delta c_1[3] = 0$
+
+$\Delta h[4] = \Delta z[4] \oplus \Delta g[4] \oplus \Delta c_2[3] \rightarrow \Delta c_2[3] = 1$
+
+
+
+By $x \boxplus y = z$:
+
+$\Delta c_1[3] = \Delta (x[3] \land y[3]) \oplus \Delta (x[3] \land c_1[2]) \oplus \Delta (y[3] \land c_1[2])=0$
+
+* $\Delta x[3] = \Delta y[3] = 0 \rightarrow \Delta (x[3] \land y[3])=0$
+* $\Delta (x[3] \land c_1[2]) = x[3] \land \Delta c_1[2]$
+* $\Delta (y[3] \land c_1[2]) = y[3] \land \Delta c_1[2]$
+
+$\Delta c_1[3] = \Delta c_1[2] \land (x[3] \oplus y[3])=0$, and $\Delta c_1[2] = 1$ from above, so $x[3] \oplus y[3] = 0$.
+
+$z[3] = x[3] \oplus y[3] \oplus c_1[2] = c_1[2]$.
+
+
+
+By $z \boxplus g = h$:
+
+$\Delta c_2[3] = \Delta (z[3] \land g[3]) \oplus \Delta (z[3] \land c_2[2]) \oplus \Delta (g[3] \land c_2[2])=1$
+
+* $\Delta (z[3] \land g[3]) = g[3] \land \Delta z[3]$, where $\Delta z[3] = 1$ from above, so $ \rightarrow g[3]$
+* $\Delta (z[3] \land c_2[2])$ can not be simplified
+* $\Delta (g[3] \land c_2[2]) = g[3] \land \Delta c_2[2] = g[3]$
+
+$\Delta c_2[3] = \Delta (z[3] \land c_2[2]) = 1$, so only $z[3] = c_2[2] = 1$ will satisfy.
+
+
+
+Finally, $z[3] = c_1[2] = c_2[2]$, and we have $c_2[2] = z[2] = c_1[2] \oplus 1$ from above, **that is $c_1[2] = c_1[2] \oplus 1$, which meets a contradiction.**
+
+
+
+###### **CASE-1.1.2 $\Delta z[4] = 0$.**
+
+
+
+$\Delta z[4] = \Delta x[4] \oplus \Delta y[4] \oplus \Delta c_1[3] \rightarrow \Delta c_1[3] = 1$
+
+$\Delta h[4] = \Delta z[4] \oplus \Delta g[4] \oplus \Delta c_2[3] \rightarrow \Delta c_2[3] = 0$
+
+
+
+By $x \boxplus y = z$:
+
+$\Delta c_1[3] = \Delta c_1[2] \land (x[3] \oplus y[3])=1$, $x[3] \oplus y[3] = 1$.
+
+$z[3] = x[3] \oplus y[3] \oplus c_1[2] = c_1[2] \oplus 1$, and equal to $z[2]$ from above.
+
+
+
+By $z \boxplus g = h$:
+
+$\Delta c_2[3] = \Delta (z[3] \land g[3]) \oplus \Delta (z[3] \land c_2[2]) \oplus \Delta (g[3] \land c_2[2])=0$
+
+$\Delta c_2[3] = \Delta (z[3] \land c_2[2]) = 0$, so only $z[3] = c_2[2] \oplus 1$ will satisfy, and equal to $z[2] \oplus 1$.
+
+
+
+Finally, **$z[3] = z[2] = z[2] \oplus 1$, also meets a contradiction.**
+
+
+
+Conclude, when $\Delta z[2] = 1$, here is an impossible.
