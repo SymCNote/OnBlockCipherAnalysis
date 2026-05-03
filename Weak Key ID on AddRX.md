@@ -350,7 +350,7 @@ x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 \end{aligned}
 $$
 
-   * for $\Delta (x[2] \land c[1])$,
+    * for $\Delta (x[2] \land c[1])$,
    
 $$
 \begin{aligned}
@@ -364,7 +364,7 @@ x[2],\ \ if\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
 \end{aligned}
 $$
 
-   * for $\Delta (y[2] \land c[1])$, there are two cases $(\Delta y[2] = 0\ and\ \Delta y[2] = 1)$.
+    * for $\Delta (y[2] \land c[1])$.
      
 $$
 \begin{aligned}
