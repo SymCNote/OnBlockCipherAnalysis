@@ -323,17 +323,19 @@ Proof (Reductio ad absurdum): $\Delta z=[z[4],z[3],z[2],z[1],z[0]]$
 
 3. For $\Delta z[2]$:
 
-   **CASE-1. $\Delta z[2] = 0$**. 
+**CASE-1. $\Delta z[2] = 1$**. 
 
-   we have $\Delta x[2]=0$, $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
+**CASE-1.1, for $\Delta x \boxplus \Delta y = \Delta z$.**
 
-   That is we have 3 conditions $\Delta z[2] = 0, \Delta x[2]=0$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
+we have $\Delta x[2]=1$, $\Delta z[2] = \Delta x[2] \oplus \Delta y[2] \oplus \Delta c_1[ 1]\Rightarrow \Delta y[2] \oplus \Delta c_1[ 1] = 1$.
 
-   From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+That is we have 3 conditions $\Delta z[2] = 1, \Delta x[2]=0$, $\Delta c[2] = 1$, and $\Delta y[2] \oplus \Delta c[1] = 1$.
+
+From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
 
 
 $$
-\Delta c[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
+\Delta c_1[2] = \Delta(x[2] \land y[2]) \oplus \Delta (x[2] \land c_1[1]) \oplus \Delta (y[2] \land c_1[1])
 $$
 
    * for $\Delta (x[2] \land y[2])$,
@@ -351,7 +353,7 @@ x[2],\ if\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 $$
 
    * for $\Delta (x[2] \land c[1])$,
-   
+
 $$
 \begin{aligned}
 & \Delta (x[2] \land c_1[1])\\
@@ -408,12 +410,107 @@ $$
 
 $$
 z[2] =\cases{
-c_1[1] = c_1[2],\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
-y[2] = c_1[2],\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
+c_1[1]+1 = c_1[2]+1,\ where\ x[2]\oplus y[2] = 1\ for\ \Delta y[2] = 0\ (\Delta c_1[1] = 1)\\
+y[2]+1 = c_1[2]+1,\ \ \,where\ x[2]\oplus c_1[1] = 1\ for\ \Delta y[2] = 1\ (\Delta c_1[1] = 0)
 }
 $$
 
-   Finally, we obtain **the combined result $z[2] = c_1[2]$.**
+   Finally, we obtain **the combined result $z[2] = c_1[2]+1$.**
 
 
+
+**CASE 1.2, for $\Delta z \boxplus \Delta g = \Delta h$.**
+
+we have $\Delta z[2]=1$, $\Delta g[2]=0$, $\Delta c_2[2] = 1$, $\Delta h[2] = \Delta z[2] \oplus \Delta g[2] \oplus \Delta c_2[1]\Rightarrow \Delta h[2] = \Delta c_1[ 1] + 1$.
+
+That is we have 4 conditions $\Delta z[2] = 1, \Delta g[2]=0, \Delta c_2[2]=1$, and $\Delta h[2] = \Delta c_1[ 1] + 1$.
+
+From Definition 1. $c[i] = (x[i] \land y[i]) \oplus (x[i] \land c[i-1]) \oplus (y[i] \land c[i-1])$, we have:
+
+
+$$
+\Delta c_1[2] = \Delta(z[2] \land g[2]) \oplus \Delta (z[2] \land c_2[1]) \oplus \Delta (g[2] \land c_2[1])
+$$
+
+   * for $\Delta(z[2] \land g[2])$,
+
+
+$$
+\begin{aligned}
+& \Delta(z[2] \land g[2])\\
+& = (z[2] \land g[2]) \oplus (z'[2] \land g'[2]) \\
+& = g[2] \land \Delta z[2],\ where\ g[2]=g'[2]\ since\ \Delta g[2] = 0\\
+& = g[2],\ where\ \Delta z[2] = 1
+\end{aligned}
+$$
+
+
+* for $\Delta (z[2] \land c_2[1])$,
+
+
+$$
+\begin{aligned}
+& \Delta (z[2] \land c_2[1])\\
+& = (z[2] \land c_2[1]) \oplus (z'[2] \land c'_2[1])\\
+& = \cases{
+(z[2] \land c_2[1]) \oplus (z'[2] \land c'_2[1]),\ where\ \Delta c_2[1] = 1 \\
+c_2[1] \land \Delta z[2],\qquad\qquad\qquad\quad where\ \Delta c_2[1] = 0
+}
+\end{aligned}
+$$
+
+
+* for $\Delta (g[2] \land c_2[1])$,
+
+
+$$
+\begin{aligned}
+& \Delta (g[2] \land c_2[1])\\
+& = (g[2] \land c_2[1]) \oplus (g'[2] \land c'_2[1])\\
+& = \cases{
+g[2],\ where\ \Delta c_2[1] = 1\\
+0, \ \quad where\ \Delta c_2[1] = 0
+}
+\end{aligned}
+$$
+
+
+Finally, 
+
+
+$$
+\begin{aligned}
+& \Delta c_2[2]\\ 
+& = \Delta(z[2] \land g[2]) \oplus \Delta (z[2] \land c_2[1]) \oplus \Delta (g[2] \land c_2[1])\\
+& = \cases{
+g[2] \oplus (z[2] \land c_2[1]) \oplus (z'[2] \land c'_2[1]) \oplus g[2] = \Delta  (z[2] \land c_2[1]),\ where\ \Delta c_2[1] = 1\\
+g[2] \oplus (c_2[1]) \land \Delta z[2]) \oplus 0 = g[2] \oplus c_2[1],\qquad\qquad\qquad\qquad \ \ where\ \Delta c_2[1] = 0\\
+}
+\end{aligned}
+$$
+
+
+And from $c[i] = (z[i] \land g[i]) \oplus (z[i] \land c[i-1]) \oplus (g[i] \land c[i-1])$, we have:
+
+
+$$
+c_2[2] = (z[2] \land g[2]) \oplus (z[2] \land c_2[1]) \oplus (g[2] \land c_2[1])\\
+$$
+
+
+From the deduction above, we have:
+
+1. for $\Delta c_2[1] = 1$, we have $\Delta c_2[2] = 1$, $c_2[1] \neq c'_2[1]$ and $z[2] \neq z'[2]$, so only $z[2] = c_2[1]=1$ will satisfy.
+2. for $\Delta c_2[1] = 0$, $\Delta c_2[1] = 1 = g[2] \oplus c_2[1]$, so $g[2] \land c_2[1] = 0$.
+
+
+$$
+c_2[2] = \cases{
+(z[2] \land g[2]) \oplus (z[2] \land c_2[1]) \oplus (g[2] \land z[2]) = z[2] \land c_2[1] \rightarrow c_2[2] = z[2] = c_2[1],\ where\ \Delta c_2[1] = 1 \\
+z[2] \land (g[2] \oplus c_2[1]=1) \oplus (g[2] \land c_2[1]=0) \rightarrow c_2[2] = z[2],\qquad\qquad\qquad\quad where\ \Delta c_2[1] = 0\
+}
+$$
+
+
+**So the combination results $c_2[2] = z[2]$.**
 
