@@ -514,3 +514,4 @@ $$
 
 **So the combination results $c_2[2] = z[2]$.**
 
+**For CASE 1.1 and CASE 1.2, we have $c_2[2] = z[2] = c_1[2] \oplus 1$.**
