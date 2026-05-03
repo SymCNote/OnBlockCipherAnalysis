@@ -596,4 +596,6 @@ Finally, **$z[3] = z[2] = z[2] \oplus 1$, also meets a contradiction.**
 
 
 
-Conclude, when $\Delta z[2] = 1$, here is an impossible.
+Conclude, when $\Delta z[2] = 1$, here is an ID.
+
+And similarly, for CASE-2 $\Delta z[2] = 0$, here is also an ID.
