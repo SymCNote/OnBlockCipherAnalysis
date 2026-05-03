@@ -265,7 +265,7 @@ New in this paper
 
 #### ~ Property 5. Modulo Subtraction $0 \leftarrow (z\boxminus y)$ 
 
-Let $x = z \oplus y$ and $x' = z' \oplus y'$, where $x, y, z, x', y', z' \in \mathbb{F}_2^n$. Suppose that $\Delta x = x \oplus x^{\prime}$, $\Delta y = y \oplus y'$ and $\Delta z = z \oplus z'$. If $\Delta z = \Delta y = (0 \cdots 0\ (1_{pos=l})\ 0 \cdots 0)$, $0\le l\le n-1$, then $\Delta x = (0 \cdots 0)$ if and only if $z[l] = y[l]$ or $z'[l] = y'[l]$.
+Let $x = z \oplus y$ and $x' = z' \oplus y'$. Suppose that $\Delta x = x \oplus x'$, $\Delta y = y \oplus y'$ and $\Delta z = z \oplus z'$. If $\Delta z = \Delta y = (0 \cdots 0\ (1_{pos=l})\ 0 \cdots 0)$, $0\le l\le n-1$, then $\Delta x = (0 \cdots 0)$ if and only if $z[l] = y[l]$ or $z'[l] = y'[l]$.
 
 
 
