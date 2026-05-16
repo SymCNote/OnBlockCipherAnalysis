@@ -244,6 +244,8 @@ with open("2addrecode.txt", "w") as f:
 <img width="250" height="400" alt="2addnew (2)" src="https://github.com/user-attachments/assets/01a43f2a-994d-44aa-9fda-ab37ec62bc2f" />
 
 **Free variables: $\Delta x$, $\Delta y$, $\Delta h$**. ($\Delta g$ is based on $\Delta y$)
+**Rotation is omitted.**
+
 
 
 ##### The called CP model `2add4inew.mzn`.
