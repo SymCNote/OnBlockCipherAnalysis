@@ -230,8 +230,7 @@ with open("2addrecode.txt", "w") as f:
 
   * Ours 4.28 hours
   
-  
-    * ref's 6 hours
+  * ref's 6 hours
   
 
 
