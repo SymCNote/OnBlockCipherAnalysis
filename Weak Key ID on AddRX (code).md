@@ -96,7 +96,7 @@ That shows `(24,25) = 1011*` is missed in the ref.
 
 #### CASE 1. 2 Modulo Additions
 
-<img width="420" height="828" alt="2add" src="https://github.com/user-attachments/assets/70d2aa70-7b1a-419e-b349-80923ad9c00c" />
+<img width="420" height="828" alt="2addnew" src="https://github.com/user-attachments/assets/78a0fc85-f697-4f49-b7b9-8448245b9970" />
 
 
 The called CP model: `2add.mzn`
