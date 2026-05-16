@@ -365,3 +365,7 @@ with open("2add4inew.txt", "w") as f:
 ##### Results
 
 We found **40940** ID trails `2add4inew.txt`.
+
+
+<img width="200" height="500" alt="2addnew (3)" src="https://github.com/user-attachments/assets/b35b8463-4334-4c66-9d87-6644a5db8c50" />
+
