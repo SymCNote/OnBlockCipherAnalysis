@@ -96,7 +96,7 @@ That shows `(24,25) = 1011*` is missed in the ref.
 
 #### CASE 1. 2 Modulo Additions
 
-<img width="200" height="400" alt="2addnew" src="https://github.com/user-attachments/assets/78a0fc85-f697-4f49-b7b9-8448245b9970" />
+<img width="250" height="400" alt="2addnew (1)" src="https://github.com/user-attachments/assets/048dd73f-c5ff-4685-9847-10c2f61d65d2" />
 
 
 
