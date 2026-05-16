@@ -1,4 +1,4 @@
-# Model 2 Modulo Additions
+# Model 2,3 Modulo Additions
 
 > ref: Finding Impossible Differentials in ARX Ciphers  under Weak Keys
 
@@ -367,5 +367,21 @@ with open("2add4inew.txt", "w") as f:
 We found **40940** ID trails `2add4inew.txt`.
 
 
+
+
+
+## PART II. for all 3 continuous modulo additions
+
+
+
 <img width="200" height="500" alt="2addnew (5)" src="https://github.com/user-attachments/assets/6480bdae-8771-439f-b253-494da15ae024" />
+
+**Free variables: $\Delta x$, $\Delta y$, $\Delta h$**. ($\Delta g$ is based on $\Delta y$, and $\Delta u$ is based on $\Delta g$)
+**Rotation is omitted.**
+
+##### The called CP model: `2add3inew.mzn`
+
+##### The calling Python: `5id2add (CP)4inew.py`
+
+##### Results
 
