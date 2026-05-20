@@ -41,7 +41,7 @@ t_j(v_j, v'_j) = 1 \\
 \end{cases}
 $$
 
-**注:** *将 函数 $f_j, f'_j$ 理解为对 list 元素是 $\overrightarrow{x_1}, \dots, \overrightarrow{x_N}$ 的**特征提取.*** 
+**注:** 将 函数 $f_j, f'_j$ 理解为对 list 元素是 $\overrightarrow{x_1}, \dots, \overrightarrow{x_N}$ 的**特征提取.**
 
 假设成功 merge 上的概率为 $P_t \Leftarrow t(\overrightarrow{x_1},...,\overrightarrow{x_N})=1$, 记 $\mathcal{L}_{sol}$ 为 merged $N$ 个 list 之后的 list, 则其大小为
 
