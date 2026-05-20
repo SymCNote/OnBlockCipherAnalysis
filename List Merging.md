@@ -93,7 +93,8 @@ $$
 
 3. Merge $L_A$ and $L_B$:
 
-    也即, 计算 $\prod_{j=1}^z t_j$, where $t_j=(v_j,v'_j)\in\lbrace 0,1 \rbrace$, 这产生一个新的 list $\mathcal{L}_{sol}$. 
+    也即, 计算 $\prod_{j=1}^z t_j$, where $t_j=(v_j,v'_j)\in\lbrace 0,1 \rbrace$, 这产生一个新的 list $\mathcal{L}\_{sol}$. 
+    
 
     $\mathcal{L}_{sol}$ 里存的是所有 pairs $((v_1,...,v_z),(v'_1,...,v'_z))$, 当 $\prod_{j=1}^z t_j=1$ 时, 标记 $1$. 所以 $\mathcal{L_{sol}}$ 如:
 
