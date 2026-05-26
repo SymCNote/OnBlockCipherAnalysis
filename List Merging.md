@@ -153,7 +153,7 @@ $$
 
 ### Instant Matching
 
-**算法：**
+**算法 1 Instant Matching：**
 
 1. 对每个 $\overrightarrow{v'_j}$ (of size $2^s$), where $j\in\lbrace 1,...,z \rbrace$, 创建 hash table $T_j$; 对每个 $v'_i \in \lbrace \overrightarrow{v'_j} \rbrace$, where $i\in \lbrace 1,...,s \rbrace$ 搜集 $v_i \in \lbrace \overrightarrow{v_j} \rbrace$, where $i\in \lbrace 1,...,s \rbrace$ and $t_j(v_j,v'_j)=1$.
 
@@ -220,8 +220,10 @@ $$
   $$
   从而得到完整的 $(v_1,...,v_6)$, 作为完整的 KEY, 立即去 $L_A$ 中查找 VALUE, 从而进行 merge.
 
-  **复杂度:** 
+  Merge 得到的 pairs 数量为 $2^{24.9}$ , 对每个 pair，去验证剩余的 4 bits 条件，复杂度为 $\mathcal{O}(2^{24.9})$.
 
+  **复杂度:** 
+  
   * *Time of iterating $L_B$:* $\mathcal{O}(zP_t2^{l_b+zs}=2^{27.6})$. **Major**
   * *Time of merging $L_A$:* $\mathcal{O}(2^{l_A+l_B}/P_t=2^{48.36-23.46}=2^{24.9})$.
 
@@ -230,10 +232,38 @@ $$
   *Time:* $2^{27.6}$ 
 
   *Memory:* $l_A,l_b=2^{24.18}$
-
   
+
+**注:** Instant Matching 适用于 $|L_{aux}| < (l_A,l_B)$ 的情况. 当 $P_t2^{zs}>l_A$ 时, *Time of iterating $L_B$:* $\mathcal{O}(zP_t2^{l_b+zs}>2^{l_A+l_B})$, 即比穷搜更差.
+
+
 
 ### Gradual Matching
 
-  
+**算法 2 Gradual Matching:**
 
+1. 对每个 $\overrightarrow{v'_j}$ (of size $2^s$), where $j\in\lbrace 1,...,z \rbrace$, 创建 hash table $T_j$; 对每个 $v'_i \in \lbrace \overrightarrow{v'_j} \rbrace$, where $i\in \lbrace 1,...,s \rbrace$ 搜集 $v_i \in \lbrace \overrightarrow{v_j} \rbrace$, where $i\in \lbrace 1,...,s \rbrace$ and $t_j(v_j,v'_j)=1$.
+
+   所以 size of $T_j\le 2^{2s}$, $T_j$ 如:
+
+   |                       KEY                        |                     VALUE                      |     Condition     |
+   | :----------------------------------------------: | :--------------------------------------------: | :---------------: |
+   | $v'_i \in \lbrace \overrightarrow{v'_j} \rbrace$ | $v_i \in \lbrace \overrightarrow{v_j} \rbrace$ | $t_j(v_j,v'_j)=1$ |
+
+   **复杂度:** 对每个 $T_j$ 建表需要的时间和存储均为 $\mathcal{O}(2^{2s})$, 所以对所有 $z$ 个 $T_j$, 总 *Time=Memory=$\mathcal{O}(z2^{2s})$*.
+
+2. 对 $\alpha \in \{\alpha_1,...,\alpha_{z'}\}\in(\{0,1\}^s)^{z'}$:
+
+   1. 从 $L_B$ 中逐个取 $(v_1,...,v_{z'})=\alpha$;
+
+   2. 与 *算法1, Step 2* 相同, 用笛卡尔积构造 $L_{aux}$; (每个 $L_{aux}$ 的大小为 $|L_{aux}|=2^{z's-\sum_{i=1}^{z'}p_j}$)
+
+      **注:** 这一步之后, $z'$ 个条件以及匹配完成, 可作为后续的筛选条件 ($2^{z's}$).
+
+   3. 从 $L_{aux}$ 中取出每个元素, 记 $\gamma=(\gamma_1,...,\gamma_{z'})$:
+
+      1. 在 $L_A$ 中逐个查找 $(v_1,...,v_{z'})=\gamma$;
+      2. Merge $L_A(\gamma)$ and $L_B(\alpha)$, 条件为 $t'=\prod_{j=z'+1}^z(t_j)$.
+      3. 将结果存入 $\mathcal{L}_{sol}$.
+
+   **注:** 这里的 $\alpha,\gamma$ 都只是为了定位 $z'$ 个向量. 
