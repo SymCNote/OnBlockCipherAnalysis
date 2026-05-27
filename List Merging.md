@@ -237,6 +237,8 @@ $$
 **注:** Instant Matching 适用于 $|L_{aux}| < (l_A,l_B)$ 的情况. 当 $P_t2^{zs}>l_A$ 时, *Time of iterating $L_B$:* $\mathcal{O}(zP_t2^{l_b+zs}>2^{l_A+l_B})$, 即比穷搜更差.
 
 
+---
+
 
 ### Gradual Matching
 
@@ -256,14 +258,115 @@ $$
 
    1. 从 $L_B$ 中逐个取 $(v_1,...,v_{z'})=\alpha$;
 
-   2. 与 *算法1, Step 2* 相同, 用笛卡尔积构造 $L_{aux}$; (每个 $L_{aux}$ 的大小为 $|L_{aux}|=2^{z's-\sum_{i=1}^{z'}p_j}$)
+   2. 与 *算法1, Step 2* 相同, 用笛卡尔积构造 $L_{aux}$; (每个 $L_{aux}$ 的大小为 $|L_{aux}|=2^{z's-\sum_{i=1}^{z'}p_j}$, 共 $2^{l_B}$ 个 $L_{aux}$)
 
-      **注:** 这一步之后, $z'$ 个条件以及匹配完成, 可作为后续的筛选条件 ($2^{z's}$).
+      **注:** 这一步之后, $z'$ 个条件以及匹配完成, 可作为后续 merge 的筛选条件, 同时作用于 $L_A,L_B$ ($2^{z's}$).
 
    3. 从 $L_{aux}$ 中取出每个元素, 记 $\gamma=(\gamma_1,...,\gamma_{z'})$:
 
       1. 在 $L_A$ 中逐个查找 $(v_1,...,v_{z'})=\gamma$;
       2. Merge $L_A(\gamma)$ and $L_B(\alpha)$, 条件为 $t'=\prod_{j=z'+1}^z(t_j)$.
       3. 将结果存入 $\mathcal{L}_{sol}$.
-
+      
+      **注:** $L_A(\gamma), L_B(\alpha)$ 都会有 $2^{z's}$ 的过滤条件, 所以 $\mathcal{L}_{sol}$ 的大小为 $2^{l_A+l_B-2z's}$ (最坏情况, 即剩余 $(z'+1,...,z)$ 没有可过滤的 条件)
+   
    **注:** 这里的 $\alpha,\gamma$ 都只是为了定位 $z'$ 个向量. 
+
+**复杂度:** 
+
+*Time:*
+
+* $\mathcal{O}(z2^{2s})$ 用于建 $z$ 个 $T_j$
+
+* Merging:
+
+  * $\mathcal{O}(2^{z's})$ 用于遍历 $\alpha$ 
+  * $\mathcal{O}(2^{z's-\sum_{i=1}^{z'}p_j})$ 用于构建 $L_{aux}$, (因为遍历了, $L_B$ 所以有 $2^{l_B}$ 个 $L_{aux}$
+  * $\mathcal{O}(2^{l_A+l_B-2z's})$ 最坏情况, $\mathcal{O}(2^{l_A+l_B-2z's})\cdot P_t$ 优化情况. 用于 merging $L_A$.
+
+  总: $\mathcal{O}(2^{z's})\cdot 2^{z's-\sum_{i=1}^{z'}p_j} \cdot 2^{l_A+l_B-2z's}=2^{l_A+l_B-\sum_{i=1}^{z'}p_j}$ 或优化为: $\mathcal{O}(2^{z's})\cdot 2^{z's} \cdot P_t \cdot 2^{l_A+l_B-2z's}=2^{l_A+l_B}\cdot P_t$
+
+总 *Time:* $\mathcal{O}(z2^{2s}+2^{l_A+l_B}\cdot P_t)$
+
+*Memory:*
+
+* 存 $T_j$, $z2^{s}$
+* 存 $L_A$, $L_B$, $2^{l_A}+2^{l_B}$
+* 存 $L_{aux}$, $2^{z's-\sum_{i=1}^{z'}p_j}$, 重复利用, 每次只存一个
+* 存 $\mathcal{L}_{sol}$, $P_t\cdot 2^{l_A+l_B}$. (no need for storage if on the fly)
+
+总 *Memory:* $\mathcal{O}(z2^{s}+2^{l_A}+2^{l_B}+2^{z's-\sum_{i=1}^{z'}p_j}+P_t\cdot 2^{l_A+l_B})$
+
+
+
+
+
+---
+
+
+
+### Parallel Matching
+
+**算法3: Parallel matching**
+
+宏观理解:
+
+将 $z$ 个特征条件取子集 $z'$, 将 $z'$ 分为两部分, $n+m=z'$. 对这两部分分别提取特征, 对其中一个表做 *$m$-特征扩展* (也可以 *$n$-特征扩展*), 对 $m$ 的特征做匹配, 若匹配上, 则merge剩余的 $z-z'$ 条件.
+
+1. 对 $L_A$, $L_B$ 划分与排序:
+
+   * 对 $L_A$中 $n<z'$ 个条件, 分 $n$ 组并排序. 共有 $2^{ns}$ 个 KEY, 并且按照每个 KEY 排序, 每个 KEY 下对应有 $2^{l_A-ns}$ 个数据.
+   * 同上对 $L_B$, $m<z'$ 个条件, 分 $m$ 组并排序. 共有 $2^{ms}$ 个 KEY , 并且按照每个 KEY 排序, 每个 KEY下对应有 $2^{l_B-ms}$ 个数据.
+
+   **复杂度:** 这一步可以在产生 $L_A$ 和 $L_B$ 时即按照这个形式存储, 所以不消耗额外的复杂度.
+
+2. 对 $n(m)$ 个 $L_A(L_B)$ 条件分别建特征对照表 (同上建表 $T_j$):
+
+   * 建表 $L_n$, $(\overrightarrow{v_1},...,\overrightarrow{v_n}, \overrightarrow{v'_1},...,\overrightarrow{v'_n})$, $v_j \in T_j[v'_j]$ for $1\le j\le n$. (KEY in $L_A$, VALUE in $L_B$), satisfy $t_j(v_j,v'_j)=1$.
+
+   * 建表 $L_m$, $(\overrightarrow{v_{n+1}},...,\overrightarrow{v_{n+m}}, \overrightarrow{v'_{n+1}},...,\overrightarrow{v'_{n+m}})$, $v'_j \in T_j[v_j]$ for $n+1\le j\le n+m$. (KEY in $L_B$, VALUE in $L_A$), $t_j(v_j,v'_j)=1$. ==有问题==
+
+  两个表的大小分别为: $|L_n|=l_n=2^{2ns-\sum_{j=1}^np_j}$, $|L_m|=l_m=2^{2ms-\sum_{j=n+1}^{n+m}p_j}$.
+
+  **复杂度:** *Time/Memory* = $2^{ln}+2^{l_m}$.
+
+3. 创建索引映射表 $L'_m$:
+
+   从 $L_m$ 中取出 $(\overrightarrow{\beta},\overrightarrow{\beta'})$, 遍历 $L_B$, 如果 $(\overrightarrow{v'_{n+1}},...,\overrightarrow{v'_{n+m}})=\beta'$ , 就将 $L_B$ 拼上 $\overrightarrow{\beta}$ $\Rightarrow (\overrightarrow{\beta},\overrightarrow{v'_1},...,\overrightarrow{v'_z})$, 存入 $L'_m$.
+
+   **注:** 这里组成的 $L'_m$, 可以直接用 $\overrightarrow{\beta}$ 寻找 $L_A$ 中的匹配, 不再需要 $\overrightarrow{\beta'}$.
+
+   **复杂度:** *Time/Memory* = $2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}$.
+
+4. 用 $L_A$ 匹配 $L'_m$:
+
+   * 从 $L_n$ 取出 $(\overrightarrow{\alpha},\overrightarrow{\alpha'})$ (**注:** 循环复杂度 $2^{l_n=2^{2ns-\sum_{j=1}^np_j}}$):
+     * 遍历 $L_A$ 满足 $(\overrightarrow{v_1},...,\overrightarrow{v_n})=\alpha$ 的 $(\overrightarrow{v_1},...,\overrightarrow{v_z})$: (**注:** 此处复杂度为 $2^{l_A-ns}$ 因为只遍历了满足 $ns$ bits 条件的数据.)
+       * 如果 $L'_m$ 里有 $(\overrightarrow{v_{n+1}},...,\overrightarrow{v_{n+m}},\overrightarrow{v'_1},...,\overrightarrow{v'_z})$ 满足 $(\overrightarrow{v'_1},...,\overrightarrow{v'_{n}})=\alpha$: (**注:** $(\overrightarrow{v'_1},...,\overrightarrow{v'_{n}})$ 在 $\overrightarrow{v'_1},...,\overrightarrow{v'_z}$ 的起始)
+         * 如果 $(\overrightarrow{v_{n+1}},...,\overrightarrow{v_{n+m}},\overrightarrow{v'_1},...,\overrightarrow{v'_z})$ 满足剩余的 $(z-n-m)$ bits 条件:
+           * 将 $(\overrightarrow{v_{n+1}},...,\overrightarrow{v_{n+m}},\overrightarrow{v'_1},...,\overrightarrow{v'_z})$ 存入结果表 $\mathcal{L}_{sol}$.
+
+   **复杂度:** 
+
+   *Time:*
+
+   * 构建 $L_A$, $L_B$ 的特征对照表: $2^{ln}+2^{l_m}$
+   * 构建 $L'_m$: $2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}$
+
+   * 遍历: $2^{2ns-\sum_{j=1}^np_j}\cdot 2^{l_A-ns}=2^{l_A+ns-\sum_{j=1}^np_j}$ 
+   * Merging: 在 merging 的时候, $ns$, $ms$ 比特都已经被确定了 (遍历的时候选的就是满足这些条件的数据), 所以复杂度为 $2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}\cdot 2^{l_A+ns-\sum_{j=1}^np_j} \cdot 2^{-ns-ms} = 2^{l_A+l_B-\sum_{j=1}^{n+m}p_j}$, 也为 $\mathcal{L}_{sol}$ 的大小.
+
+   总 Time: $\mathcal{O}(2^{ln}+2^{l_m}+2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}+2^{l_A+ns-\sum_{j=1}^np_j}+2^{l_A+l_B-\sum_{j=1}^{n+m}p_j})$
+
+   *Memory:*
+
+   * 存 $L_A$, $L_B$ 的特征对照表: $2^{l_n}+2^{l_m}$
+   * 存 $L_B$: $2^{l_B}$ (**注:** $L_A$ 的操作 on the fly, 不用存)
+   * 存 $L'_m$: $2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}$
+   * 存 $\mathcal{L}_{sol}$: $2^{l_A+l_B-\sum_{j=1}^{n+m}p_j}$
+
+   总 Memory: $\mathcal{O}(2^{l_n}+2^{l_m}+2^{l_B}+2^{l_B+sm-\sum_{j=n+1}^{n+m}p_j}+2^{l_A+l_B-\sum_{j=1}^{n+m}p_j})$
+
+   
+
+
