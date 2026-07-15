@@ -46,9 +46,9 @@ $$
 
 ### 原理与假设
 
-假设有概率为 $2^{-p}$ 的差分区分器，其中 $p$ 为区分器概率的负对数（$p>0$）
+假设有概率为 $2^{-p}$ 的差分区分器，其中 $p$ 为区分器概率的负对数（ $p>0$ ）
 
-$\bigstar$ 当分组密码的密钥加不是加在全状态上的时候（**非全状态密钥加（Non-Full Key Addition）**，典型算法有$\texttt{SKINNY, GIFT, SIMON}$，parallel partition可以用来在增加复杂度的情况下增加攻击轮数，**ONE** round.
+$\bigstar$ 当分组密码的密钥加不是加在全状态上的时候（**非全状态密钥加（Non-Full Key Addition）**，典型算法有 $\texttt{SKINNY, GIFT, SIMON}$ ，parallel partition可以用来在增加复杂度的情况下增加攻击轮数，**ONE** round.
 
 如下图所示，在区分器末尾添加一轮，密钥只加在 $m$ bits 状态上，若 $p>m$，则以上加一轮条件可以被满足.
 
