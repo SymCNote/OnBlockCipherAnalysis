@@ -9,7 +9,7 @@
 
 $n$-bit 分组密码 $E$，有如下图的区分器与扩展：
 
-<\p center>
+<p align="center">
 <img src="https://github.com/user-attachments/assets/93471796-555c-41da-9b9e-9fad9f48de36" width = "300" height = "500" div align=center />
 <\p>
 
@@ -41,10 +41,9 @@ $$
 
 ## Basic Parallel Partitioning in Differential MITM
 
-> Based on Section 2.2 of  
-> [22-CC-Differential Meet-In-The-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-38548-3_9)
+> Based on Section 2.2 of  [22-CC-Differential Meet-In-The-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-38548-3_9)
 >
-> 下文忽略影响成功率的常数因子，并以基本加密、解密或列表处理操作为时间复杂度单位。
+> 下文忽略影响成功率的常数因子，并以基本加密、解密或列表处理操作为时间复杂度单位。（refined by AI）
 
 ### 1. 基本设定
 
@@ -54,14 +53,14 @@ $$
 
 记：
 
-| 符号 | 含义 |
-|---|---|
-| $k_{\mathrm{in}}$ | 从明文侧构造候选消息对所需的密钥信息 |
-| $k_{\mathrm{out}}$ | 从密文侧构造候选消息对所需的密钥信息 |
-| $I=\lvert k_{\mathrm{in}}\cap k_{\mathrm{out}}\rvert$ | 两侧公共密钥信息的比特数 |
-| $k$ | 主密钥长度 |
-| $m$ | 新增轮中受轮密钥加影响的状态比特数 |
-| $k_m$ | 不能由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定的新增轮密钥信息量 |
+| 符号                                                  | 含义                                                         |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| $k_{\mathrm{in}}$                                     | 从明文侧构造候选消息对所需的密钥信息                         |
+| $k_{\mathrm{out}}$                                    | 从密文侧构造候选消息对所需的密钥信息                         |
+| $I=\lvert k_{\mathrm{in}}\cap k_{\mathrm{out}}\rvert$ | 两侧公共密钥信息的比特数                                     |
+| $k$                                                   | 主密钥长度                                                   |
+| $m$                                                   | 新增轮中受轮密钥加影响的状态比特数                           |
+| $k_m$                                                 | 不能由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定的新增轮密钥信息量 |
 
 > [!IMPORTANT]
 > 这里的 $2^p$ 是需要覆盖的**基准 D-MITM 实例数**，并不一定等于攻击的数据复杂度。
@@ -164,10 +163,6 @@ $$
 
 组候选匹配，比单个基础 D-MITM 实例增加了 $2^{2m}$ 倍。
 
-但是，一个 partition 同时代替了 $2^m$ 次基础 D-MITM 操作。因此，与分别执行这 $2^m$ 次操作相比，真正需要抵消的额外候选增长只有 $2^m$ 倍。
-
----
-
 ### 5. Partition 提供的匹配条件
 
 对于来自两个列表的候选
@@ -180,7 +175,7 @@ $$
 
 需要验证它们是否能通过同一个轮密钥 $K_r$ 连接。
 
-#### 5.1 不受密钥影响部分
+#### 5.1 不受密钥影响部分 ($n-m$) bits filter
 
 由于这 $n-m$ 个比特不经过密钥加，原始状态的这些比特已经由 partition 固定。对于关联状态，还需要满足
 
@@ -190,7 +185,7 @@ $$
 
 这提供 $n-m$ 比特的过滤。
 
-#### 5.2 差分一致性
+#### 5.2 差分一致性 ($m$) bits filter
 
 在受密钥影响的 $m$ 个比特上，同一个轮密钥会在差分中抵消：
 
@@ -210,7 +205,7 @@ $$
 
 该条件提供 $m$ 比特的过滤。
 
-#### 5.3 轮密钥一致性
+#### 5.3 轮密钥一致性 ($m-k_m$) bits filter
 
 候选状态还必须给出正确的新增轮密钥：
 
@@ -228,7 +223,9 @@ $$
 
 比特的有效过滤。
 
-因此，parallel partitioning 的总过滤量为
+
+
+因此，parallel partitioning 的**总过滤量**为
 
 $$
 (n-m)+m+(m-k_m) = n+m-k_m.
@@ -294,8 +291,6 @@ $$
 $$
 2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+m-n}.
 $$
-
----
 
 ### 7. 时间复杂度
 
@@ -437,7 +432,7 @@ $$
 每个 partition 包含
 
 $$
-2^4=16
+2^4
 $$
 
 个基准状态，因此只需
