@@ -138,17 +138,17 @@ $$
 
 - 枚举 $X$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{out}}\setminus k_{\mathrm{in}}$，得到大小为
 
-  $$
-  \lvert L_X\rvert = 2^{m+\lvert k_{\mathrm{out}}\rvert-I}
-  $$
+$$
+\lvert L_X\rvert = 2^{m+\lvert k_{\mathrm{out}}\rvert-I}
+$$
 
   的候选列表；
 
 - 枚举 $Y$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{in}}\setminus k_{\mathrm{out}}$，得到大小为
 
-  $$
-  \lvert L_Y\rvert = 2^{m+\lvert k_{\mathrm{in}}\rvert-I}
-  $$
+$$
+\lvert L_Y\rvert = 2^{m+\lvert k_{\mathrm{in}}\rvert-I}
+$$
 
   的候选列表。
 
