@@ -37,54 +37,6 @@ $$
 
 
 
-
-## Basic Parallel Partition in D-MITM
-
-> from Section 2.2 of Paper [22-CC-Differential Meet-In-The-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-38548-3_9)
-
-
-
-### 原理与假设
-
-假设有概率为 $2^{-p}$ 的差分区分器，其中 $p$ 为区分器概率的负对数（ $p>0$ ）
-
-$\bigstar$ 当分组密码的密钥加不是加在全状态上的时候（**非全状态密钥加（Non-Full Key Addition）**，典型算法有 $\texttt{SKINNY, GIFT, SIMON}$ ，parallel partition可以用来在增加复杂度的情况下增加攻击轮数，**ONE** round.
-
-如下图所示，在区分器末尾添加一轮，密钥只加在 $m$ bits 状态上，若 $p>m$，则以上加一轮条件可以被满足.
-
-<img src="https://github.com/user-attachments/assets/41a6a985-4011-481a-a627-f37cd4677d02" width = "500" height = "300" div align=center />
-
-### 方法与步骤
-
-如上图，在攻击最后添加一轮， $X$ 和 $Y$ 分别是 Key Addition 前后的状态（其中有 $n-m$ bits 未被 Key Addition 影响）
-
-$\blacktriangleright$ 由于需要 $2^p$ 个明文来保证至少找到一个正确 pair，假设现有数据量即为 $2^p$，则在上图 $S_{r-1}$ 处即有 $2^p$ 个数据。将 $2^n$（实际是 $2^p$ 种情况） 在 $X$ 和 $Y$ 处进行划分，可化为 $2^m \times 2^{p-m}$ ：
-
-* 其中 $2^m$ 对应受密钥影响的部分；
-* $2^{p-m}$ 对应不受密钥影响的部分</u>，这部分同样需要多次取值（但不受密钥影响，每次不同取值对应 $2^m$ 次 basic D-MITM 的操作）来达到数据要求.
-
-* 对每个不同取值的 $p-m$ 部分的 $X$ 和 $Y$ （复杂度 $2^{p-m}$），执行以下操作：
-
-  * 对 $X$，由于有 $2^m$ 个 $P$，即有 $2^m$ 个 $C$ , 所以 $(C,\widetilde{C},k_{out})$ 的数量要 $\times 2^m$，即为 $2^{m+k_{out}}$ 个 Pairs.
-  * 对 $Y$，由于其是密文，可将其<u>解密至明文</u>，然后执行明文部分的部分加密操作。同上，有 $2^{m+k_{in}}$  个 Pairs.
-  * 匹配 $X$ 和 $Y$，匹配后的数量为 $2^{|k_{in}|+|k_{out}|+2m}$ ，比之前多了 $2^{2m}$ .
-    * 因为 $X$ 和 $Y$ 之间只有一层 Key Addition, 所以 应该满足 $(X\oplus k_m)\oplus (X'\oplus k_m)=Y\oplus Y'$ , 即 $X\oplus X' = Y\oplus Y'$ , 这对应着 $2^{-m}$ 的过滤效果. 
-    * 如果 $2^m$ 部分对应密钥猜测是（部分）免费的（通常可以用 $k_{in}\cup k_{out}$ 推出来），则又对应过滤效果 $2^{k_{in}-m}$；
-  * 因此，匹配后的数量为 $2^{|k_{in}|+|k_{out}|+2m-m-m}=2^{|k_{in}|+|k_{out}|}$ 没变（假设 $k_{m}=0$）.
-
-
-### 复杂度分析
-
-
-$$
-\mathcal{T}=2^{p-m}\times(2^{|k_{in}|+m}+2^{|k_{out}|+m}+2^{|k_{in}|+|k_{out}|-|k_{in}\cap k_{out}|+(2m-m+k_m-m)-n+p})+2^{k-n+p}
-$$
-
-
-注：为保证至少存在一个正确 Pair，最终生成的 Pairs 数量应该保持与 Basic D-MITM 攻击一致. 所以由于在 Upper 和 Lower 所产生的 Pairs 数量增加 $2^{|k_{in}|}\rightarrow 2^{|k_{in}|+m}$，所以重复的次数减少 $2^p\rightarrow 2^{p-m}$ .
-
----
-
 ## Basic Parallel Partitioning in Differential MITM
 
 > Based on Section 2.2 of  
@@ -187,9 +139,7 @@ $$
 - 枚举 $X$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{out}}\setminus k_{\mathrm{in}}$，得到大小为
 
   $$
-  \lvert L_X\rvert
-  =
-  2^{m+\lvert k_{\mathrm{out}}\rvert-I}
+  \lvert L_X\rvert = 2^{m+\lvert k_{\mathrm{out}}\rvert-I}
   $$
 
   的候选列表；
@@ -197,9 +147,7 @@ $$
 - 枚举 $Y$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{in}}\setminus k_{\mathrm{out}}$，得到大小为
 
   $$
-  \lvert L_Y\rvert
-  =
-  2^{m+\lvert k_{\mathrm{in}}\rvert-I}
+  \lvert L_Y\rvert = 2^{m+\lvert k_{\mathrm{in}}\rvert-I}
   $$
 
   的候选列表。
