@@ -9,7 +9,9 @@
 
 $n$-bit 分组密码 $E$，有如下图的区分器与扩展：
 
+<\p center>
 <img src="https://github.com/user-attachments/assets/93471796-555c-41da-9b9e-9fad9f48de36" width = "300" height = "500" div align=center />
+<\p>
 
 ### 方法与步骤
 
