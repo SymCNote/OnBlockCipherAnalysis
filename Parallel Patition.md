@@ -67,7 +67,7 @@ $$
 > 对于基础 D-MITM，数据复杂度通常为
 >
 > $$
-> D=\min\left(2^n,\;2^{p+\min(\lvert k_{\mathrm{in}}\rvert,\lvert k_{\mathrm{out}}\rvert)}\right).
+> D=\min\left(2^n,2^{p+\min(\lvert k_{\mathrm{in}}\rvert,\lvert k_{\mathrm{out}}\rvert)}\right).
 > $$
 
 ---
