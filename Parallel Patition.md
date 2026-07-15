@@ -83,6 +83,512 @@ $$
 
 注：为保证至少存在一个正确 Pair，最终生成的 Pairs 数量应该保持与 Basic D-MITM 攻击一致. 所以由于在 Upper 和 Lower 所产生的 Pairs 数量增加 $2^{|k_{in}|}\rightarrow 2^{|k_{in}|+m}$，所以重复的次数减少 $2^p\rightarrow 2^{p-m}$ .
 
+---
+
+## Basic Parallel Partitioning in Differential MITM
+
+> Based on Section 2.2 of  
+> [22-CC-Differential Meet-In-The-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-38548-3_9)
+>
+> 下文忽略影响成功率的常数因子，并以基本加密、解密或列表处理操作为时间复杂度单位。
+
+### 1. 基本设定
+
+考虑一个分组长度为 $n$ 的分组密码，以及一个概率为 $2^{-p}$ 的差分区分器，其中 $p>0$ 是区分器概率的负对数。
+
+基础 differential MITM（D-MITM）攻击需要处理大约 $2^p$ 个独立的基准明密文实例 $(P_\ell,C_\ell)$，从而期望至少有一个实例对应的消息对通过该差分区分器。
+
+记：
+
+| 符号 | 含义 |
+|---|---|
+| $k_{\mathrm{in}}$ | 从明文侧构造候选消息对所需的密钥信息 |
+| $k_{\mathrm{out}}$ | 从密文侧构造候选消息对所需的密钥信息 |
+| $I=\lvert k_{\mathrm{in}}\cap k_{\mathrm{out}}\rvert$ | 两侧公共密钥信息的比特数 |
+| $k$ | 主密钥长度 |
+| $m$ | 新增轮中受轮密钥加影响的状态比特数 |
+| $k_m$ | 不能由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定的新增轮密钥信息量 |
+
+> [!IMPORTANT]
+> 这里的 $2^p$ 是需要覆盖的**基准 D-MITM 实例数**，并不一定等于攻击的数据复杂度。
+>
+> 对于基础 D-MITM，数据复杂度通常为
+>
+> $$
+> D=\min\left(2^n,\;2^{p+\min(\lvert k_{\mathrm{in}}\rvert,\lvert k_{\mathrm{out}}\rvert)}\right).
+> $$
+
+---
+
+### 2. 适用条件
+
+假设在基础 D-MITM 攻击的末尾添加一轮。将该轮中密钥加之前和之后的状态分别记为 $X$ 和 $Y$，满足
+
+$$
+Y=X\oplus K_r.
+$$
+
+轮密钥 $K_r$ 只作用于状态中的 $m<n$ 个比特；剩余 $n-m$ 个比特不受密钥加影响。因此，在这些位置上恒有
+
+$$
+X_{\mathrm{free}}=Y_{\mathrm{free}}.
+$$
+
+典型的 partial-state key addition 算法包括 `SKINNY` 和 `GIFT`。对于 `SIMON` 等 Feistel/AndRX 密码，也可以利用类似思想，但需要根据其轮函数结构重新描述 partition。
+
+基础 parallel partitioning 通常要求：
+
+1. $p>m$，使一个大小为 $2^m$ 的 partition 可以代替 $2^m$ 次基础 D-MITM 操作；
+2. 新增轮密钥的相关部分能够由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定，即理想情况下 $k_m=0$；
+3. 密钥加之后的公开可逆操作已经被消去，或被吸收到状态 $Y$ 的定义中，使新增部分可表示为 $Y=X\oplus K_r$。
+
+在这些条件下，parallel partitioning 可以增加一轮攻击，而不增加主导的时间和数据复杂度。峰值内存复杂度通常会增加。
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/41a6a985-4011-481a-a627-f37cd4677d02" width="500" alt="Basic parallel partitioning in differential MITM">
+</p>
+
+---
+
+### 3. Partition 的构造
+
+对于一个 partition：
+
+1. 固定 $X$ 和 $Y$ 中不受密钥加影响的 $n-m$ 个比特；
+2. 让受密钥加影响的其余 $m$ 个比特遍历全部 $2^m$ 个取值。
+
+因此，一个 partition 同时包含 $2^m$ 个基准状态，而不是只处理一个状态。
+
+为了总共覆盖约 $2^p$ 个基准实例，只需构造
+
+$$
+2^{p-m}
+$$
+
+个不同的 partition。
+
+换言之，parallel partitioning 并没有减少需要覆盖的基准实例总数，而是将原本的 $2^p$ 次独立操作组织为
+
+$$
+2^{p-m}\times 2^m=2^p
+$$
+
+个实例，并在每个 partition 内并行处理其中的 $2^m$ 个实例。
+
+> [!NOTE]
+> $2^{p-m}$ 不是“不受密钥影响部分的取值数”本身，而是所需的 partition 数量。每个 partition 由一组新的固定比特值定义，并包含 $2^m$ 个自由变化的状态。
+
+---
+
+### 4. 两侧候选列表的生成
+
+首先猜测两侧公共的 $I$ 比特密钥信息。对于每个公共密钥猜测：
+
+- 枚举 $X$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{out}}\setminus k_{\mathrm{in}}$，得到大小为
+
+  $$
+  \lvert L_X\rvert
+  =
+  2^{m+\lvert k_{\mathrm{out}}\rvert-I}
+  $$
+
+  的候选列表；
+
+- 枚举 $Y$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{in}}\setminus k_{\mathrm{out}}$，得到大小为
+
+  $$
+  \lvert L_Y\rvert
+  =
+  2^{m+\lvert k_{\mathrm{in}}\rvert-I}
+  $$
+
+  的候选列表。
+
+这里使用 $X$-side 和 $Y$-side，而不固定称为 upper part 或 lower part，因为在攻击首部或尾部添加 partition 时，两侧的命名可能互换。
+
+两个列表的笛卡尔积包含
+
+$$
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
+$$
+
+组候选匹配，比单个基础 D-MITM 实例增加了 $2^{2m}$ 倍。
+
+但是，一个 partition 同时代替了 $2^m$ 次基础 D-MITM 操作。因此，与分别执行这 $2^m$ 次操作相比，真正需要抵消的额外候选增长只有 $2^m$ 倍。
+
+---
+
+### 5. Partition 提供的匹配条件
+
+对于来自两个列表的候选
+
+$$
+(X,\widetilde X,j)
+\qquad\text{和}\qquad
+(Y,\widetilde Y,i),
+$$
+
+需要验证它们是否能通过同一个轮密钥 $K_r$ 连接。
+
+#### 5.1 不受密钥影响部分
+
+由于这 $n-m$ 个比特不经过密钥加，原始状态的这些比特已经由 partition 固定。对于关联状态，还需要满足
+
+$$
+\widetilde X_{\mathrm{free}}
+=
+\widetilde Y_{\mathrm{free}}.
+$$
+
+这提供 $n-m$ 比特的过滤。
+
+#### 5.2 差分一致性
+
+在受密钥影响的 $m$ 个比特上，同一个轮密钥会在差分中抵消：
+
+$$
+\begin{aligned}
+Y\oplus\widetilde Y
+&=(X\oplus K_r)\oplus(\widetilde X\oplus K_r)\\
+&=X\oplus\widetilde X.
+\end{aligned}
+$$
+
+因此必须满足
+
+$$
+X_{\mathrm{key}}\oplus\widetilde X_{\mathrm{key}}
+=
+Y_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
+$$
+
+该条件提供 $m$ 比特的过滤。
+
+#### 5.3 轮密钥一致性
+
+候选状态还必须给出正确的新增轮密钥：
+
+$$
+K_r
+=
+X_{\mathrm{key}}\oplus Y_{\mathrm{key}}
+=
+\widetilde X_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
+$$
+
+若相关的 $m$ 比特轮密钥均可由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定，即 $k_m=0$，则该条件再提供 $m$ 比特过滤。
+
+若其中有 $k_m$ 个独立比特不能由已有密钥信息确定，则这些比特只能由状态关系推导或额外猜测，因而轮密钥一致性只提供
+
+$$
+m-k_m
+$$
+
+比特的有效过滤。
+
+因此，parallel partitioning 的总过滤量为
+
+$$
+(n-m)+m+(m-k_m)
+=
+n+m-k_m.
+$$
+
+在理想情形 $k_m=0$ 下，总过滤量为
+
+$$
+n+m.
+$$
+
+---
+
+### 6. 为什么匹配数量不会增加
+
+对于每个 partition 和每个公共密钥猜测，匹配前有
+
+$$
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
+$$
+
+组候选。
+
+经过 $n+m-k_m$ 比特过滤后，期望剩余
+
+$$
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I
++2m-(n+m-k_m)}
+=
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I
++m-n+k_m}
+$$
+
+组候选。
+
+再乘以 $2^I$ 个公共密钥猜测以及 $2^{p-m}$ 个 partition，得到总候选数
+
+$$
+2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert
+-I-n+k_m}.
+$$
+
+当 $k_m=0$ 时，该数量化为
+
+$$
+2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-I-n},
+$$
+
+与基础 D-MITM 攻击完全相同。
+
+也可以直接比较：
+
+- 分别执行 $2^m$ 次基础 D-MITM 时，匹配候选数为
+
+  $$
+  2^m\cdot
+  2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I-n};
+  $$
+
+- 使用一个 parallel partition 时，匹配候选数为
+
+  $$
+  2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
+  \cdot 2^{-(n+m)}.
+  $$
+
+两者均等于
+
+$$
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+m-n}.
+$$
+
+---
+
+### 7. 时间复杂度
+
+parallel partitioning 的时间复杂度可以写为
+
+$$
+\begin{aligned}
+\mathcal{T}_{\mathrm{PP}}
+={}&
+2^{p-m}\cdot 2^I
+\Big(
+2^{\lvert k_{\mathrm{in}}\rvert-I+m}
++
+2^{\lvert k_{\mathrm{out}}\rvert-I+m}\\
+&\qquad\qquad+
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert
+-2I+2m-(n+m-k_m)}
+\Big)
++
+2^{k-n+p}.
+\end{aligned}
+$$
+
+其中，最后一项表示在得到 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 后，对剩余主密钥信息进行穷举验证的成本；仅在需要恢复剩余密钥位时计入。
+
+化简可得
+
+$$
+\boxed{
+\mathcal{T}_{\mathrm{PP}}
+=
+2^{p+\lvert k_{\mathrm{in}}\rvert}
++
+2^{p+\lvert k_{\mathrm{out}}\rvert}
++
+2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-I-n+k_m}
++
+2^{k-n+p}
+}.
+$$
+
+在理想情形 $k_m=0$ 下，
+
+$$
+\mathcal{T}_{\mathrm{PP}}
+=
+2^{p+\lvert k_{\mathrm{in}}\rvert}
++
+2^{p+\lvert k_{\mathrm{out}}\rvert}
++
+2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-I-n}
++
+2^{k-n+p},
+$$
+
+与基础 D-MITM 攻击的时间复杂度相同。
+
+因此，“免费增加一轮”更准确的含义是：
+
+> 当 $k_m=0$ 且其他适用条件成立时，新增轮不会增加攻击的主导时间复杂度和数据复杂度。
+
+---
+
+### 8. 内存和数据复杂度
+
+在每个 partition 中，若存储两个列表中较小的一个，则峰值内存复杂度约为
+
+$$
+\mathcal{M}_{\mathrm{PP}}
+=
+2^{m+\min(
+\lvert k_{\mathrm{in}}\rvert-I,\,
+\lvert k_{\mathrm{out}}\rvert-I
+)}.
+$$
+
+相比基础 D-MITM，内存通常增加 $2^m$ 倍。因此，parallel partitioning 并非在所有复杂度指标上完全免费。
+
+在相同的数据获取模型下，总数据复杂度保持为
+
+$$
+\mathcal{D}_{\mathrm{PP}}
+=
+\min\left(
+2^n,\,
+2^{p+\min(
+\lvert k_{\mathrm{in}}\rvert,\,
+\lvert k_{\mathrm{out}}\rvert
+)}
+\right),
+$$
+
+与基础 D-MITM 相同。
+
+---
+
+### 9. 一个小例子
+
+设
+
+$$
+n=16,\qquad
+m=4,\qquad
+p=12,
+$$
+
+并假设
+
+$$
+\lvert k_{\mathrm{in}}\rvert
+=
+\lvert k_{\mathrm{out}}\rvert
+=
+8,\qquad
+I=2,\qquad
+k_m=0.
+$$
+
+#### 基础 D-MITM
+
+攻击需要执行约
+
+$$
+2^{12}
+$$
+
+次基准操作。
+
+两侧列表生成的总成本分别为
+
+$$
+2^{12+8}=2^{20}.
+$$
+
+匹配后候选数量为
+
+$$
+2^{12+8+8-2-16}
+=
+2^{10}.
+$$
+
+#### 使用 parallel partitioning
+
+每个 partition 包含
+
+$$
+2^4=16
+$$
+
+个基准状态，因此只需
+
+$$
+2^{12-4}=2^8
+$$
+
+个 partition。
+
+对于每个公共密钥猜测，每侧列表大小为
+
+$$
+2^{8-2+4}=2^{10}.
+$$
+
+两个列表的笛卡尔积大小为
+
+$$
+2^{20}.
+$$
+
+parallel partition 提供
+
+$$
+n+m=16+4=20
+$$
+
+比特过滤，所以每个 partition、每个公共密钥猜测期望剩余一个候选。
+
+总候选数量为
+
+$$
+2^8\cdot 2^2
+=
+2^{10},
+$$
+
+与基础 D-MITM 完全相同。
+
+两侧列表生成的总成本也分别为
+
+$$
+2^8\cdot 2^2\cdot 2^{10}
+=
+2^{20},
+$$
+
+同样与基础攻击相同。
+
+但每个 partition 中需要保存的列表从基础攻击的
+
+$$
+2^{8-2}=2^6
+$$
+
+增加至
+
+$$
+2^{8-2+4}=2^{10},
+$$
+
+即峰值内存增加了 $2^4$ 倍。
+
+---
+
+### 10. 核心理解
+
+parallel partitioning 的本质不是减少差分区分器所需的 $2^p$ 个基准实例，而是：
+
+> 将 $2^m$ 次相互独立的基础 D-MITM 操作合并到一个 structure 中，并利用新增轮的差分一致性和轮密钥一致性，抵消列表笛卡尔积带来的额外候选。
+
+因此，在 $k_m=0$ 时，可以用更大的单次列表和更高的峰值内存，换取少 $2^m$ 倍的外层重复次数，从而在不提高主导时间和数据复杂度的情况下增加一轮攻击。
+
+---
+
+
+
+
 ## Improved Parallel Partition in D-MITM
 
 > from Section 4.1 of Paper [24-EC-Improved Differential Meet-in-the-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-58716-0_10)
