@@ -183,9 +183,7 @@ $$
 由于这 $n-m$ 个比特不经过密钥加，原始状态的这些比特已经由 partition 固定。对于关联状态，还需要满足
 
 $$
-\widetilde X_{\mathrm{free}}
-=
-\widetilde Y_{\mathrm{free}}.
+\widetilde X_{\mathrm{free}} = \widetilde Y_{\mathrm{free}}.
 $$
 
 这提供 $n-m$ 比特的过滤。
@@ -205,9 +203,7 @@ $$
 因此必须满足
 
 $$
-X_{\mathrm{key}}\oplus\widetilde X_{\mathrm{key}}
-=
-Y_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
+X_{\mathrm{key}}\oplus\widetilde X_{\mathrm{key}} = Y_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
 $$
 
 该条件提供 $m$ 比特的过滤。
@@ -217,11 +213,7 @@ $$
 候选状态还必须给出正确的新增轮密钥：
 
 $$
-K_r
-=
-X_{\mathrm{key}}\oplus Y_{\mathrm{key}}
-=
-\widetilde X_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
+K_r = X_{\mathrm{key}}\oplus Y_{\mathrm{key}} = \widetilde X_{\mathrm{key}}\oplus\widetilde Y_{\mathrm{key}}.
 $$
 
 若相关的 $m$ 比特轮密钥均可由 $k_{\mathrm{in}}\cup k_{\mathrm{out}}$ 确定，即 $k_m=0$，则该条件再提供 $m$ 比特过滤。
@@ -237,9 +229,7 @@ $$
 因此，parallel partitioning 的总过滤量为
 
 $$
-(n-m)+m+(m-k_m)
-=
-n+m-k_m.
+(n-m)+m+(m-k_m) = n+m-k_m.
 $$
 
 在理想情形 $k_m=0$ 下，总过滤量为
@@ -263,11 +253,7 @@ $$
 经过 $n+m-k_m$ 比特过滤后，期望剩余
 
 $$
-2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I
-+2m-(n+m-k_m)}
-=
-2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I
-+m-n+k_m}
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m-(n+m-k_m)} = 2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+m-n+k_m}
 $$
 
 组候选。
@@ -275,8 +261,7 @@ $$
 再乘以 $2^I$ 个公共密钥猜测以及 $2^{p-m}$ 个 partition，得到总候选数
 
 $$
-2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert
--I-n+k_m}.
+2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert -I-n+k_m}.
 $$
 
 当 $k_m=0$ 时，该数量化为
@@ -291,17 +276,16 @@ $$
 
 - 分别执行 $2^m$ 次基础 D-MITM 时，匹配候选数为
 
-  $$
-  2^m\cdot
-  2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I-n};
-  $$
+$$
+2^m\cdot 2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I-n};
+$$
 
 - 使用一个 parallel partition 时，匹配候选数为
 
-  $$
-  2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
-  \cdot 2^{-(n+m)}.
-  $$
+$$
+2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
+\cdot 2^{-(n+m)}.
+$$
 
 两者均等于
 
@@ -339,8 +323,7 @@ $$
 
 $$
 \boxed{
-\mathcal{T}_{\mathrm{PP}}
-=
+\mathcal{T}_{\mathrm{PP}} = 
 2^{p+\lvert k_{\mathrm{in}}\rvert}
 +
 2^{p+\lvert k_{\mathrm{out}}\rvert}
@@ -354,8 +337,7 @@ $$
 在理想情形 $k_m=0$ 下，
 
 $$
-\mathcal{T}_{\mathrm{PP}}
-=
+\mathcal{T}_{\mathrm{PP}} =
 2^{p+\lvert k_{\mathrm{in}}\rvert}
 +
 2^{p+\lvert k_{\mathrm{out}}\rvert}
@@ -378,8 +360,7 @@ $$
 在每个 partition 中，若存储两个列表中较小的一个，则峰值内存复杂度约为
 
 $$
-\mathcal{M}_{\mathrm{PP}}
-=
+\mathcal{M}_{\mathrm{PP}} =
 2^{m+\min(
 \lvert k_{\mathrm{in}}\rvert-I,\,
 \lvert k_{\mathrm{out}}\rvert-I
@@ -391,8 +372,7 @@ $$
 在相同的数据获取模型下，总数据复杂度保持为
 
 $$
-\mathcal{D}_{\mathrm{PP}}
-=
+\mathcal{D}_{\mathrm{PP}} =
 \min\left(
 2^n,\,
 2^{p+\min(
@@ -419,10 +399,8 @@ $$
 并假设
 
 $$
-\lvert k_{\mathrm{in}}\rvert
-=
-\lvert k_{\mathrm{out}}\rvert
-=
+\lvert k_{\mathrm{in}}\rvert =
+\lvert k_{\mathrm{out}}\rvert =
 8,\qquad
 I=2,\qquad
 k_m=0.
@@ -501,9 +479,7 @@ $$
 两侧列表生成的总成本也分别为
 
 $$
-2^8\cdot 2^2\cdot 2^{10}
-=
-2^{20},
+2^8\cdot 2^2\cdot 2^{10} = 2^{20},
 $$
 
 同样与基础攻击相同。
