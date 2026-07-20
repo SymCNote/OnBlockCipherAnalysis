@@ -379,7 +379,7 @@ $$
 \min\left(
 2^n,\,
 2^{p+\min(
-\lvert k_{\mathrm{in}}\rvert,\,
+\lvert k_{\mathrm{in}}\rvert,
 \lvert k_{\mathrm{out}}\rvert
 )}
 \right),
