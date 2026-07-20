@@ -399,7 +399,7 @@ $$
 
 在介绍 improved parallel partition 之前，先明确 truncated differential 的含义。
 
-普通 differential 通常固定一对具体差分，而 truncated differential 考虑的是输入、输出差分集合：$\Delta_{in},\Delta_{out}\subseteq\mathbb{F}_2^n.$
+普通 differential 通常固定一对具体差分，而 truncated differential 考虑的是输入、输出差分集合： $\Delta_{in},\Delta_{out}\subseteq\mathbb{F}_2^n.$
 
 记 $|\Delta_{in}|=2^{\delta_{in}},|\Delta_{out}|=2^{\delta_{out}}.$ 即 给定一个 $P\in\{\Delta_{in}\}$ 可以张成大小为 $|\Delta_{in}|$ 的空间.
 
@@ -408,38 +408,32 @@ $$
 #### 1. 有效截断差分
 
 对于理想的 $n$-bit permutation，在给定输入差分属于 $\Delta_{in}$ 的条件下，输出差分落入 $\Delta_{out}$ 的基准概率为
-$$
-P_{\mathrm{rand}}=\frac{|\Delta_{out}|}{2^n}=2^{\delta_{out}-n}.
-$$
+
+$$P_{\mathrm{rand}}=\frac{|\Delta_{out}|}{2^n}=2^{\delta_{out}-n}.$$
+
 因此，一个正向截断差分只有在满足
-$$
-P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)>\frac{|\Delta_{out}|}{2^n}
-$$
+
+$$P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)>\frac{|\Delta_{out}|}{2^n}$$
+
 时，才可以相对于随机置换提供有效区分。
 
-若其正向概率记为
-$$
-P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)=2^{-p},
-$$
-则有效性条件等价于 $p<n-\delta_{out}.$
+若其正向概率记为 $P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)=2^{-p},$ 则有效性条件等价于 $p<n-\delta_{out}.$
 
 #### 2. 截断差分具有方向性
 
 由于输入和输出差分集合的大小可能不同，截断差分的正向和反向概率通常不相等。具体地，
-$$
-P\left(\Delta_{out}\stackrel{E^{-1}}{\longrightarrow}\Delta_{in}\right)=P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)\times\frac{|\Delta_{in}|}{|\Delta_{out}|}.
-$$
+
+$$P\left(\Delta_{out}\stackrel{E^{-1}}{\longrightarrow}\Delta_{in}\right)=P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)\times\frac{|\Delta_{in}|}{|\Delta_{out}|}.$$
+
 若反向概率记为 $2^{-p'}$，则 $p'=p+\delta_{out}-\delta_{in}.$
 
 #### 3. 所需 pair 数量
 
 若截断差分的概率为 $2^{-p}$，为了期望获得一个 right pair，需要测试约 $2^p$ 个有效 differential pairs。
 
-对于一个固定的基础明文 $P$ 和一个固定的正确 $k_{in}$，集合 $\Delta_{in}$ 中的每个差分都对应一个候选 $\widetilde P$。因此，每个 $P$ 可以产生$|\Delta_{in}|=2^{\delta_{in}}$ 个 differential pairs。故期望获得一个 right pair 时，基础明文 $P$ 的数量为 $2^{p-\delta_{in}}.$
+对于一个固定的基础明文 $P$ 和一个固定的正确 $k_{in}$，集合 $\Delta_{in}$ 中的每个差分都对应一个候选 $\widetilde P$。因此，每个 $P$ 可以产生 $|\Delta_{in}|=2^{\delta_{in}}$ 个 differential pairs。故期望获得一个 right pair 时，基础明文 $P$ 的数量为 $2^{p-\delta_{in}}.$
 
 更一般地，若期望获得 $s$ 个 right pairs，则需要约 $s2^p$ 个有效 pairs，或约 $s2^{p-\delta_{in}}$ 个基础明文。
-
-
 
 ### Truncated Differential MITM
 
@@ -457,29 +451,27 @@ $$
 
 因为每个 $P$ 可以产生 $2^{\delta_{in}}$ 个空间, 所以需要重复的次数为 $2^{p-\delta_{in}}$;
 
-* 对每个选择的明文, 先猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, 对上下部分分别进行加解密 $2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$
-* 对每个猜测的明文, 及猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, Matching: $2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}$
+- 对每个选择的明文, 先猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, 对上下部分分别进行加解密 $2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$
+- 对每个猜测的明文, 及猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, Matching: $2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}$
 
 时间复杂度:
-$$
-\mathcal{T}=2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\right)+2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}\right).
-$$
-数据复杂度:
-$$
-D=\min\{2^n,2^{p-\delta_{in}+\min{|k_{in}|+\delta_{in},|k_{out}|+\delta_{out}}}\}.
-$$
 
+$$\mathcal{T}=2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\right)+2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}\right).$$
+
+数据复杂度:
+
+$$D=\min\{2^n,2^{p-\delta_{in}+\min{|k_{in}|+\delta_{in},|k_{out}|+\delta_{out}}}\}.$$
 
 内存复杂度:
-$$
-M=\min\{2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|},2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\}.
-$$
+
+$$M=\min\{2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|},2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\}.$$
 
 ### Improved Parallel Partition
 
-Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。它将原来主要适用于 partial-state key addition 的 parallel partition 推广到以下两种情形: 
+Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。它将原来主要适用于 partial-state key addition 的 parallel partition 推广到以下两种情形:
 
 对具有 whole-state key addition 的 SPN，可以额外扩展一轮；
+
 对具有 partial-state key addition 的 SPN，可以扩展多于一轮；(如 SKINNY 中可扩展两轮)
 
 <img src="https://github.com/user-attachments/assets/cac6c058-c804-423c-8010-9dd2b87fc7c1" width="500" height="300" div align="center" />
@@ -490,10 +482,10 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 
 记:
 
-* $A$：原 D-MITM 攻击的末尾状态;
-* $B$：在 $A$ 之后额外**扩展一轮或多轮**得到的状态;
-* $F$：施加独立条件的 word 数量;
-* $(W-F)s$：施加条件后仍然自由的状态比特数.
+- $A$：原 D-MITM 攻击的末尾状态;
+- $B$：在 $A$ 之后额外**扩展一轮或多轮**得到的状态;
+- $F$：施加独立条件的 word 数量;
+- $(W-F)s$：施加条件后仍然自由的状态比特数.
 
 ==> 若不施加任何条件，$A$ 和 $B$ 各有 $2^{Ws}$ 种可能取值.
 
@@ -507,13 +499,13 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 
 在 truncated D-MITM 中，对每个 $k_{in}\cap k_{out}$ 的猜测:
 
-* 上侧产生 $2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$ 个候选；
+- 上侧产生 $2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$ 个候选；
 
-* 下侧产生 $2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$ 个候选.
+- 下侧产生 $2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$ 个候选.
 
-由于每次 parallel treatment **同时覆盖 $2^{(W-F)s}$ 个基础状态**, 攻击的重复次数从 $2^{p-\delta_{in}}$  减少为 $2^{p-(W-F)s-\delta_{in}}.$ structure 的大小与重复次数相互抵消: $2^{(W-F)s}\times2^{p-(W-F)s-\delta_{in}}=2^{p-\delta_{in}}.$
+由于每次 parallel treatment **同时覆盖 $2^{(W-F)s}$ 个基础状态**, 攻击的重复次数从 $2^{p-\delta_{in}}$ 减少为 $2^{p-(W-F)s-\delta_{in}}.$ structure 的大小与重复次数相互抵消: $2^{(W-F)s}\times2^{p-(W-F)s-\delta_{in}}=2^{p-\delta_{in}}.$
 
-换言之，parallel partition 重新组织了数据和计算方式: 
+换言之，parallel partition 重新组织了数据和计算方式:
 
 ==> 产生 $2^{p-(W-F)s-\delta_{in}}$ 个 initial structure, 每个 structure 包含 $2^{(W-F)s}$ 个明文 $P$, 而每个 $P$ (在每次固定的密钥猜测下) 可张成 $2^{\delta_{in}}$ 个 $\widetilde P$.
 
@@ -529,10 +521,10 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 
 除上述 $Fs$-bit matching 外, $A$ 与 $B$ 之间以及 $\widetilde A$ 与 $\widetilde B$ 之间还可能存在 $L$ 个独立线性关系，由此得到额外的 $2^{-L}$ 过滤因子.
 
-这两类条件的作用不同: 
+这两类条件的作用不同:
 
-* $Fs$-bit matching 检查 initial structure 的起始条件是否由两侧一致满足;
-* $L$-bit sieving 使用新增轮所提供的、独立于起始条件的线性关系, 其中 $L\leq 2(W-F)s.$ (新增一轮或两轮的确定性轮函数在 $A,B,\widetilde A, \widetilde B$ 之间诱导出的**精确一致性方程**。对于正确的状态与密钥候选，这些方程必然成立；错误候选以约 $2^{−L}$ 的概率通过)
+- $Fs$-bit matching 检查 initial structure 的起始条件是否由两侧一致满足;
+- $L$-bit sieving 使用新增轮所提供的、独立于起始条件的线性关系, 其中 $L\leq 2(W-F)s.$ (新增一轮或两轮的确定性轮函数在 $A,B,\widetilde A, \widetilde B$ 之间诱导出的**精确一致性方程**。对于正确的状态与密钥候选，这些方程必然成立；错误候选以约 $2^{−L}$ 的概率通过)
 
 当能够获得完整的 sieving potential 时，希望找到总计 $2(W-F)s$ 个独立线性关系。若这些关系的验证需要额外密钥信息，则相应密钥 bits 也必须加入 $k_{in}$ 或 $k_{out}$；若关系能够消去未知轮密钥，则无需额外猜测。
 
@@ -544,12 +536,10 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 2. 为检查这些条件而新增的独立密钥信息不会提高攻击复杂度的主项;
 3. 最终剩余候选数低于穷举搜索的复杂度.
 
-$$
-\begin{aligned} \mathcal{T}=& 2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times\\ & (2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+ 2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\\ & +2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}). \end{aligned}
-$$
+$$\begin{aligned}\mathcal{T}=&2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times\\&\left(2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}+2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}\right).\end{aligned}$$
 
 其中：
 
-* 前两项分别对应上侧和下侧候选列表的生成;
-* 第三项对应两侧列表合并后，在 $Fs+L$ bits 条件下剩余的候选数量;
-* 若检查 linear relations 需要额外密钥 bits, 则应将其加入 $|k_{in}|$ 或 $|k_{out}|$ 后重新评估复杂度.
+- 前两项分别对应上侧和下侧候选列表的生成;
+- 第三项对应两侧列表合并后，在 $Fs+L$ bits 条件下剩余的候选数量;
+- 若检查 linear relations 需要额外密钥 bits, 则应将其加入 $|k_{in}|$ 或 $|k_{out}|$ 后重新评估复杂度.
