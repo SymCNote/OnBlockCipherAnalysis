@@ -473,7 +473,9 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 
 对具有 partial-state key addition 的 SPN，可以扩展多于一轮；(如 SKINNY 中可扩展两轮)
 
+<p align="center">
 <img src="https://github.com/user-attachments/assets/cac6c058-c804-423c-8010-9dd2b87fc7c1" width="500" height="300" div align="center" />
+<\p>
 
 基本设置
 
