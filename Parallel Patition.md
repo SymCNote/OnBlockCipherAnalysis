@@ -388,8 +388,7 @@ $$
 与基础 D-MITM 相同。
 
 ---
-
-
+---
 
 ## Improved Parallel Partition in D-MITM
 
@@ -487,7 +486,7 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 - $F$：施加独立条件的 word 数量;
 - $(W-F)s$：施加条件后仍然自由的状态比特数.
 
-==> 若不施加任何条件，$A$ 和 $B$ 各有 $2^{Ws}$ 种可能取值.
+==> 若不施加任何条件, $A$ 和 $B$ 各有 $2^{Ws}$ 种可能取值.
 
 ==> 现在在新增轮的内部状态上施加 $Fs$ 个独立条件，[例如: 1) 将某些 words 固定为特定值；2) 对若干内部 words 施加线性关系.] 这些条件将 $A$ 和 $B$ 的可能取值数分别缩减为 $2^{(W-F)s}.$ 这些可能值分别构成一对大小为 $2^{(W-F)s}$ 的 **initial structures**.
 
@@ -536,7 +535,14 @@ Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。
 2. 为检查这些条件而新增的独立密钥信息不会提高攻击复杂度的主项;
 3. 最终剩余候选数低于穷举搜索的复杂度.
 
-$$\begin{aligned}\mathcal{T}=&2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times\\&\left(2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}+2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}\right).\end{aligned}$$
+
+$$
+\begin{aligned}
+\mathcal{T}=&2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times\\
+&\left(2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}+2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}\right).
+\end{aligned}
+$$
+
 
 其中：
 
