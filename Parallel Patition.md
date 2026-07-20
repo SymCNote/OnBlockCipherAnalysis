@@ -365,7 +365,7 @@ $$
 $$
 \mathcal{M}_{\mathrm{PP}} =
 2^{m+\min(
-\lvert k_{\mathrm{in}}\rvert-I,\,
+\lvert k_{\mathrm{in}}\rvert-I,
 \lvert k_{\mathrm{out}}\rvert-I
 )}.
 $$
