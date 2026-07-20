@@ -135,23 +135,21 @@ $$
 
 ### 4. 两侧候选列表的生成
 
-首先猜测两侧公共的 $I$ 比特密钥信息。对于每个公共密钥猜测：
+首先猜测两侧公共的 $I$ 比特密钥信息。
 
-- 枚举 $X$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{out}}\setminus k_{\mathrm{in}}$，得到大小为
+* 对于每个公共密钥猜测：
+
+- 枚举 $X$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{out}}\setminus k_{\mathrm{in}}$，得到候选列表，大小为
 
 $$
 \lvert L_X\rvert = 2^{m+\lvert k_{\mathrm{out}}\rvert-I}
 $$
 
-  的候选列表；
-
-- 枚举 $Y$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{in}}\setminus k_{\mathrm{out}}$，得到大小为
+- 枚举 $Y$ 的 $2^m$ 个取值，并枚举 $k_{\mathrm{in}}\setminus k_{\mathrm{out}}$，得到候选列表，大小为
 
 $$
 \lvert L_Y\rvert = 2^{m+\lvert k_{\mathrm{in}}\rvert-I}
 $$
-
-  的候选列表。
 
 这里使用 $X$-side 和 $Y$-side，而不固定称为 upper part 或 lower part，因为在攻击首部或尾部添加 partition 时，两侧的命名可能互换。
 
@@ -241,13 +239,11 @@ $$
 
 ### 6. 为什么匹配数量不会增加
 
-对于每个 partition 和每个公共密钥猜测，匹配前有
+对于每个 partition 和每个公共密钥猜测，匹配前有候选数量为：
 
 $$
 2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+2m}
 $$
-
-组候选。
 
 经过 $n+m-k_m$ 比特过滤后，期望剩余
 
@@ -269,7 +265,9 @@ $$
 2^{p+\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-I-n},
 $$
 
-与基础 D-MITM 攻击完全相同。
+*与基础 D-MITM 攻击完全相同*。
+
+
 
 也可以直接比较：
 
@@ -291,6 +289,14 @@ $$
 $$
 2^{\lvert k_{\mathrm{in}}\rvert+\lvert k_{\mathrm{out}}\rvert-2I+m-n}.
 $$
+
+> [!NOTE]
+>
+> 当 $p>m$，这一基础条件满足，且以下两条件满足其一，使用 parallel partition 与基础 D-MITM 时间复杂度相同：
+>
+> 1. 当 $k_m=0$ ，即 $m$ bits extra key 可全部由 $k_{in} \cup k_{out}$ 推导出时，时间复杂度保持与 Basic D-MITM 完全相同；
+>
+> 2. 但当 $k_m >0$ ，当 Matching 部分的时间复杂度不为 时间复杂度 的主导项时，时间复杂度依然可以保持。
 
 ### 7. 时间复杂度
 
@@ -383,237 +389,167 @@ $$
 
 ---
 
-### 9. 一个小例子
-
-设
-
-$$
-n=16,\qquad
-m=4,\qquad
-p=12,
-$$
-
-并假设
-
-$$
-\lvert k_{\mathrm{in}}\rvert =
-\lvert k_{\mathrm{out}}\rvert =
-8,\qquad
-I=2,\qquad
-k_m=0.
-$$
-
-#### 基础 D-MITM
-
-攻击需要执行约
-
-$$
-2^{12}
-$$
-
-次基准操作。
-
-两侧列表生成的总成本分别为
-
-$$
-2^{12+8}=2^{20}.
-$$
-
-匹配后候选数量为
-
-$$
-2^{12+8+8-2-16}=2^{10}.
-$$
-
-#### 使用 parallel partitioning
-
-每个 partition 包含
-
-$$
-2^4
-$$
-
-个基准状态，因此只需
-
-$$
-2^{12-4}=2^8
-$$
-
-个 partition。
-
-对于每个公共密钥猜测，每侧列表大小为
-
-$$
-2^{8-2+4}=2^{10}.
-$$
-
-两个列表的笛卡尔积大小为
-
-$$
-2^{20}.
-$$
-
-parallel partition 提供
-
-$$
-n+m=16+4=20
-$$
-
-比特过滤，所以每个 partition、每个公共密钥猜测期望剩余一个候选。
-
-总候选数量为
-
-$$
-2^8\cdot 2^2=2^{10},
-$$
-
-与基础 D-MITM 完全相同。
-
-两侧列表生成的总成本也分别为
-
-$$
-2^8\cdot 2^2\cdot 2^{10} = 2^{20},
-$$
-
-同样与基础攻击相同。
-
-但每个 partition 中需要保存的列表从基础攻击的
-
-$$
-2^{8-2}=2^6
-$$
-
-增加至
-
-$$
-2^{8-2+4}=2^{10},
-$$
-
-即峰值内存增加了 $2^4$ 倍。
-
----
-
-### 10. 核心理解
-
-parallel partitioning 的本质不是减少差分区分器所需的 $2^p$ 个基准实例，而是：
-
-> 将 $2^m$ 次相互独立的基础 D-MITM 操作合并到一个 structure 中，并利用新增轮的差分一致性和轮密钥一致性，抵消列表笛卡尔积带来的额外候选。
-
-因此，在 $k_m=0$ 时，可以用更大的单次列表和更高的峰值内存，换取少 $2^m$ 倍的外层重复次数，从而在不提高主导时间和数据复杂度的情况下增加一轮攻击。
-
----
-
-
 
 
 ## Improved Parallel Partition in D-MITM
 
-> from Section 4.1 of Paper [24-EC-Improved Differential Meet-in-the-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-58716-0_10)
+> From Section 4.1 of Paper [24-EC-Improved Differential Meet-in-the-Middle Cryptanalysis](https://link.springer.com/chapter/10.1007/978-3-031-58716-0_10)
 
+### Truncated Differentials
 
+在介绍 improved parallel partition 之前，先明确 truncated differential 的含义。
 
-### Truncated Differential (notes)
+普通 differential 通常固定一对具体差分，而 truncated differential 考虑的是输入、输出差分集合：$\Delta_{in},\Delta_{out}\subseteq\mathbb{F}_2^n.$
 
-在 improved Parallel Partition 之前，需要先厘清 truncated differential 是什么. 以下介绍几个小点，对比其与 differential (characteristic) 的不同：
+记 $|\Delta_{in}|=2^{\delta_{in}},|\Delta_{out}|=2^{\delta_{out}}.$ 即 给定一个 $P\in\{\Delta_{in}\}$ 可以张成大小为 $|\Delta_{in}|$ 的空间.
 
-注意： $\Delta_{in}$ 和 $\Delta_{out}$ 可以不为差分特征，即 $|\Delta_{in}|\ge 1$ 和/或 $\Delta_{out}\ge 1$.
+其中，集合中的差分通常具有相同的 word-wise activity pattern，但其具体差分值可以不同.
 
-1. 判断截断差分轨迹是否有效（将其与 PRP 对比）：
+#### 1. 有效截断差分
 
+对于理想的 $n$-bit permutation，在给定输入差分属于 $\Delta_{in}$ 的条件下，输出差分落入 $\Delta_{out}$ 的基准概率为
 $$
-\begin{align}
-P(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out})>P(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out})=\frac{|\Delta_{out}|}{n}
-\end{align}
+P_{\mathrm{rand}}=\frac{|\Delta_{out}|}{2^n}=2^{\delta_{out}-n}.
 $$
-
-2. 截断差分有方向：
-
-   
+因此，一个正向截断差分只有在满足
 $$
-\begin{align}
-P(\Delta_{in}\stackrel{E^{-1}}{\longrightarrow}\Delta_{out})=P(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out})\times \frac{|\Delta_{in}|}{|\Delta_{out}|}
-\end{align}
+P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)>\frac{|\Delta_{out}|}{2^n}
 $$
+时，才可以相对于随机置换提供有效区分。
 
-3. 截断差分在组 Pairs 之后（全猜密钥）数据量为：
-
-   期望获得的正确 Pair 数量为 $s$ 
-
-   
+若其正向概率记为
 $$
-\begin{align}
-s \times |\Delta_{in}|\ (resp. |\Delta_{out}|)
-\end{align}
+P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)=2^{-p},
 $$
+则有效性条件等价于 $p<n-\delta_{out}.$
+
+#### 2. 截断差分具有方向性
+
+由于输入和输出差分集合的大小可能不同，截断差分的正向和反向概率通常不相等。具体地，
+$$
+P\left(\Delta_{out}\stackrel{E^{-1}}{\longrightarrow}\Delta_{in}\right)=P\left(\Delta_{in}\stackrel{E}{\longrightarrow}\Delta_{out}\right)\times\frac{|\Delta_{in}|}{|\Delta_{out}|}.
+$$
+若反向概率记为 $2^{-p'}$，则 $p'=p+\delta_{out}-\delta_{in}.$
+
+#### 3. 所需 pair 数量
+
+若截断差分的概率为 $2^{-p}$，为了期望获得一个 right pair，需要测试约 $2^p$ 个有效 differential pairs。
+
+对于一个固定的基础明文 $P$ 和一个固定的正确 $k_{in}$，集合 $\Delta_{in}$ 中的每个差分都对应一个候选 $\widetilde P$。因此，每个 $P$ 可以产生$|\Delta_{in}|=2^{\delta_{in}}$ 个 differential pairs。故期望获得一个 right pair 时，基础明文 $P$ 的数量为 $2^{p-\delta_{in}}.$
+
+更一般地，若期望获得 $s$ 个 right pairs，则需要约 $s2^p$ 个有效 pairs，或约 $s2^{p-\delta_{in}}$ 个基础明文。
 
 
 
-### Truncated D-MITM
+### Truncated Differential MITM
 
+设密码分解为 $E=E_{out}\circ E_m\circ E_{in},$ 其中中间部分 $E_m$ 存在概率为 $2^{-p}$ 的截断差分 $\Delta_{in}\stackrel{E_m}{\longrightarrow}\Delta_{out}.$
 
+记：
+
+- $k_{in}$：从明文端生成满足 $\Delta_{in}$ 的候选 pair 所需的密钥信息；
+- $k_{out}$：从密文端生成满足 $\Delta_{out}$ 的候选 pair 所需的密钥信息；
+- $k_{in}\cap k_{out}$：两侧密钥信息之间可由 key schedule 建立的公共独立信息。
+
+对于每个基础明文和固定的公共密钥信息，上侧和下侧分别产生 $2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$ 和 $2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$ 个候选。
 
 #### 复杂度分析
 
+因为每个 $P$ 可以产生 $2^{\delta_{in}}$ 个空间, 所以需要重复的次数为 $2^{p-\delta_{in}}$;
+
+* 对每个选择的明文, 先猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, 对上下部分分别进行加解密 $2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$
+* 对每个猜测的明文, 及猜测 $2^{|k_{in}\cap k_{out}|}$ 密钥, Matching: $2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}$
+
+时间复杂度:
 $$
-\begin{aligned}
-\mathcal{T} & =2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}(2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}) \\
- & +2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}(2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n})
-\end{aligned}
+\mathcal{T}=2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\right)+2^{p-\delta_{in}}\times2^{|k_{in}\cap k_{out}|}\left(2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}-2|k_{in}\cap k_{out}|-n}\right).
+$$
+数据复杂度:
+$$
+D=\min\{2^n,2^{p-\delta_{in}+\min{|k_{in}|+\delta_{in},|k_{out}|+\delta_{out}}}\}.
 $$
 
 
+内存复杂度:
+$$
+M=\min\{2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|},2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\}.
+$$
 
-### Improved Parallel Partition (more generic)
+### Improved Parallel Partition
 
-**（For Truncated Differential）**
+Improved parallel partition 可以应用于普通 D-MITM 和 truncated D-MITM。它将原来主要适用于 partial-state key addition 的 parallel partition 推广到以下两种情形: 
 
-两方面改进（sharing 相同的逻辑）：
+对具有 whole-state key addition 的 SPN，可以额外扩展一轮；
+对具有 partial-state key addition 的 SPN，可以扩展多于一轮；(如 SKINNY 中可扩展两轮)
 
-1. 对全状态密钥加 （Full Key Addition） 也可以用 Parallel Partition 扩展 1 轮；
-2. 对非全状态密钥加 （Non-Full Key Addition） 可以用 Parallel Partition 扩展 2 轮.
+<img src="https://github.com/user-attachments/assets/cac6c058-c804-423c-8010-9dd2b87fc7c1" width="500" height="300" div align="center" />
 
+基本设置
 
+设密码状态由 $W$ 个 $s$-bit words 组成，因此 $n=Ws.$
 
-<img src="https://github.com/user-attachments/assets/cac6c058-c804-423c-8010-9dd2b87fc7c1" width = "500" height = "300" div align=center />
+记:
 
+* $A$：原 D-MITM 攻击的末尾状态;
+* $B$：在 $A$ 之后额外**扩展一轮或多轮**得到的状态;
+* $F$：施加独立条件的 word 数量;
+* $(W-F)s$：施加条件后仍然自由的状态比特数.
 
+==> 若不施加任何条件，$A$ 和 $B$ 各有 $2^{Ws}$ 种可能取值.
 
-#### 原理与假设
+==> 现在在新增轮的内部状态上施加 $Fs$ 个独立条件，[例如: 1) 将某些 words 固定为特定值；2) 对若干内部 words 施加线性关系.] 这些条件将 $A$ 和 $B$ 的可能取值数分别缩减为 $2^{(W-F)s}.$ 这些可能值分别构成一对大小为 $2^{(W-F)s}$ 的 **initial structures**.
 
-如上图，在攻击最后添加 1-2 轮，D-MITM 攻击末尾状态为 $A$ , 加 1-2 轮后状态为 $B$. 对 Full Key Addition 的分组密码，可在 D-MITM 攻击末尾加上一轮. 
+**所选的 $Fs$-bit 条件应满足**: 结合 $k_{in}$, 能够从一侧**唯一确定** $B$ 的等价 $Fs$ bits；结合 $k_{out}$，能够从另一侧**唯一确定** $A$ 的等价 $Fs$ bits.
 
-如上图，通过固定 $A,B$ 上 $F$ 个 words，可以实现和 basic parallel partition 类似的效果:
+#### Parallel treatment
 
-* 当固定的 $F$ 个 words 所对应的 $k_F$ 可以由 $k_{in} \cup k_{out}$ 推出，则该方法与 basic parallel partition 相同；
-* 当固定的 $F$ 个 words 所对应的 $k_F$ 不能（全部）由 $k_{in} \cup k_{out}$ 推出，则匹配后留下的 Pairs 变多，具体的下面解释.
+对于每一对**大小为 $2^{(W-F)s}$ 的 structures**，同时执行上侧和下侧的 D-MITM 计算.
 
+在 truncated D-MITM 中，对每个 $k_{in}\cap k_{out}$ 的猜测:
 
+* 上侧产生 $2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$ 个候选；
 
-因为是截断差分，所以状态有 $W$ 个 words, 假设每个 word 的大小为 $s$ bits, 则 $n=Ws$. 若没有任何条件，则扩展 1-2 轮的代价为需要将攻击重复 $2^{Ws}$ 次，数据量为 $2^p$.（若只期望留下一个正确 Pair，则未进行扩展时需要重复攻击的次数为 1 , 且数据量为 $2^p$ ）现假设将 $W$ 中 $F$ 个 words 固定下来，则所需要重复的攻击次数缩减为 $2^{p-(W-F)s}$，数据量为 $2^p$. 或，理解为有 $2^{(W-F)s}$ 个 structure，每个 structure 包含 $2^p$ 的数据量.
+* 下侧产生 $2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$ 个候选.
 
-#### 方法与步骤
+由于每次 parallel treatment **同时覆盖 $2^{(W-F)s}$ 个基础状态**, 攻击的重复次数从 $2^{p-\delta_{in}}$  减少为 $2^{p-(W-F)s-\delta_{in}}.$ structure 的大小与重复次数相互抵消: $2^{(W-F)s}\times2^{p-(W-F)s-\delta_{in}}=2^{p-\delta_{in}}.$
 
-有区分器概率为 $2^p<1$，扩展后，在末尾（也可以在首部）增加 1-2 轮. 固定 $Fs$ bits 数据，并标记这些位置涉及的密钥 $k_F$ .
+换言之，parallel partition 重新组织了数据和计算方式: 
 
-由于额外的扩展轮，但有 $Fs$ bits 数据被固定，所以在两端产生的 Paris 数量增加 $2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}\rightarrow 2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$. 为满足至少找到 1 个正确 Pair，重复计算的次数减少 $2^{p-\delta_{in}+|k_{in}\cap k_{out}|}\rightarrow 2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}$ .
+==> 产生 $2^{p-(W-F)s-\delta_{in}}$ 个 initial structure, 每个 structure 包含 $2^{(W-F)s}$ 个明文 $P$, 而每个 $P$ (在每次固定的密钥猜测下) 可张成 $2^{\delta_{in}}$ 个 $\widetilde P$.
 
-将扩展产生的额外涉及状态，以 word 为单位分为两组 $2^{W}=2^{F}\times 2^{W-F}$ , 其中 $F$ words 选为固定位置，$W-F$ words 为随机位置. 对 $2^{(W-F)s}$ 个 structures 里的每一个，进行如下操作：
+#### Matching and sieving
 
-* 并行的，对 $A$ ，由于有 $2^{(W-F)s}$ 个 $P\rightarrow A$ ，所以 $(A,\widetilde{A},k_{out})$ 的数量为  $2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}$  个.
-* 并行的，对 $B$ ，将其解密到明文 $(P,\widetilde{P},k_{in})$ , 然后计算到 $\widehat{A}$，与上面同理, $(B,\widetilde{B},\widehat{A},k_{in})$ 的数量为 $2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}$ .
-* 匹配 $\widetilde{A}$ 与 $\widehat{A}$ ：
-  * 因为匹配时需要满足 $A\oplus B = \widetilde{A} \oplus \widetilde{B}$ 的条件，所以有 $2^{-F}$ bits 的条件可用于过滤.
-  * 若固定部分 $F$ 个 words 上涉及的密钥 $k_F$ 能够被 $k_{in}, k_{out}$ 推出，则在匹配时会产生 $2^{k_f-F}$ bits 条件用于过滤.
-  * 此外，$A,B$ 之间还可能存在 $2^L$ bits 的线性条件，==和上面一条有什么关系？==
+合并两侧候选列表时使用两类相互独立的过滤条件。
 
+1. **Starting-point matching**
 
+在施加初始条件的 $F$ 个 words 上, 两侧计算出的 **$\widetilde A$ 和 $\widetilde B$ 所对应的 $Fs$ bits 必须一致**, 因此得到 **$2^{-Fs}$ 的过滤因子**. 这些 $Fs$ bits 可能需要借助候选中的 $k_{in}$ 和 $k_{out}$ 才能计算. 若检查它们需要额外的独立密钥信息, 则这些密钥信息必须计入 $k_{in}$ 或 $k_{out}$. 准确地说, 若需要**额外猜测 $|k_F|$ bits (固定部分涉及的额外密钥量)**, 而 matching 提供 $Fs$ bits 的过滤, 则对应的**候选数量净因子为 $2^{|k_F|-Fs}.$** 如果 $k_F$ 可以由已经涉及的 $k_{in}\cup k_{out}$ 推导, 即 $|k_F|=0$, 则不会引入新的独立密钥猜测.
 
-#### 复杂度分析
+2. **Additional linear relations**
 
+除上述 $Fs$-bit matching 外, $A$ 与 $B$ 之间以及 $\widetilde A$ 与 $\widetilde B$ 之间还可能存在 $L$ 个独立线性关系，由此得到额外的 $2^{-L}$ 过滤因子.
+
+这两类条件的作用不同: 
+
+* $Fs$-bit matching 检查 initial structure 的起始条件是否由两侧一致满足;
+* $L$-bit sieving 使用新增轮所提供的、独立于起始条件的线性关系, 其中 $L\leq 2(W-F)s.$ (新增一轮或两轮的确定性轮函数在 $A,B,\widetilde A, \widetilde B$ 之间诱导出的**精确一致性方程**。对于正确的状态与密钥候选，这些方程必然成立；错误候选以约 $2^{−L}$ 的概率通过)
+
+当能够获得完整的 sieving potential 时，希望找到总计 $2(W-F)s$ 个独立线性关系。若这些关系的验证需要额外密钥信息，则相应密钥 bits 也必须加入 $k_{in}$ 或 $k_{out}$；若关系能够消去未知轮密钥，则无需额外猜测。
+
+适用条件: 结构并行化本身要求 $(W-F)s\leq p,$ 否则一次 structure 覆盖的状态数超过了区分器所需的有效尝试数。
+
+但该条件本身不足以保证总体攻击复杂度不变。还需要保证:
+
+1. $Fs$-bit matching 和 $L$-bit linear relations 提供足够的候选过滤;
+2. 为检查这些条件而新增的独立密钥信息不会提高攻击复杂度的主项;
+3. 最终剩余候选数低于穷举搜索的复杂度.
 
 $$
-\begin{aligned}
-\mathcal{T}=& 2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times(2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+\\
-& 2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}+2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}).
-\end{aligned}
+\begin{aligned} \mathcal{T}=& 2^{p-(W-F)s-\delta_{in}+|k_{in}\cap k_{out}|}\times\\ & (2^{(W-F)s}\times2^{|k_{in}|+\delta_{in}-|k_{in}\cap k_{out}|}+ 2^{(W-F)s}\times2^{|k_{out}|+\delta_{out}-|k_{in}\cap k_{out}|}\\ & +2^{|k_{in}|+\delta_{in}+|k_{out}|+\delta_{out}+2(W-F)s-Fs-L-2|k_{in}\cap k_{out}|}). \end{aligned}
 $$
+
+其中：
+
+* 前两项分别对应上侧和下侧候选列表的生成;
+* 第三项对应两侧列表合并后，在 $Fs+L$ bits 条件下剩余的候选数量;
+* 若检查 linear relations 需要额外密钥 bits, 则应将其加入 $|k_{in}|$ 或 $|k_{out}|$ 后重新评估复杂度.
