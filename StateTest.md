@@ -12,7 +12,7 @@ ref.
 
 ### 使用逻辑
 
-设主密钥长 $K$ 比特, 所有涉及的独立密钥信息为 $k_{inv}$ 比特; $st$ 比特状态 $z$ 压缩了 $|k_{st}|$ 比特密钥, 且 $st<|k_{st}|$. 固定 pair 和其他已猜密钥后, 假设密钥到状态的映射均衡, 检查只通过 $z$ 使用这部分密钥, 且没有额外约束. 每个状态对应 $2^{k_{\rm st}-st}$ 种密钥取值.
+设主密钥长 $K$ 比特, 所有涉及的独立密钥信息为 $k_{inv}$ 比特; $st$ 比特状态 $z$ 压缩了 $|k_{st}|$ 比特密钥, 且 $st<|k_{st}|$. 固定 pair 和其他已猜密钥后, 假设密钥到状态的映射均衡, 检查只通过 $z$ 使用这部分密钥, 且没有额外约束. 每个状态对应 $2^{k_{st}-st}$ 种密钥取值.
 
 ### 优势来源
 
@@ -43,9 +43,9 @@ ref.
 
 ### 成功率/穷搜复杂度 影响
 
-* 以上两种**完整展开**情况, 在不使用密钥计数器, 使用 [逐条测试方法](https://github.com/SymCNote/Fundamentals/blob/main/SuccessProbability.pdf) 
+* 以上两种**完整展开**情况, 在不使用密钥计数器, 使用 ([逐条测试方法](https://github.com/SymCNote/Fundamentals/blob/main/SuccessProbability.pdf) )
   * 并不会降低攻击的成功率 $1-e^{-s}$; 
-  * 穷搜复杂度为猜测过滤后的 $(pair, cand. key, tested state)$ 数量 $N'$ $\times$ ==**展开 state test 复杂度 $m$**== $\times$ 补全主密钥复杂度 $2^{K-k_{involve}}$, 其中 展开 state test 复杂度 视具体情况而定 (一般会倾向于 test 满足展开时复杂度 $m\le 2^{k_{st}-st}$ 的状态). 一般不会让穷搜的复杂度变高, 最差情况, 达到与不使用 state test 相同的穷搜复杂度.
+  * 穷搜复杂度为猜测过滤后的 $(pair, cand. key, tested state)$ 数量 $N'$ $\times$ ==**展开 state test 复杂度 $m$**== $\times$ 补全主密钥复杂度 $2^{K-k_{involve}}$, 其中 展开 state test 复杂度 视具体情况而定 (一般会倾向于 test 满足展开时复杂度 $m\le 2^{k_{st}-st}$ 的状态). 一般不会让穷搜的复杂度变高, **最差情况, 达到与不使用 state test 相同的穷搜复杂度**.
 
 * 使用计数器为密钥计数 ([阈值筛选方法](https://github.com/SymCNote/Fundamentals/blob/main/SuccessProbability.pdf)):
 
@@ -61,7 +61,7 @@ ref.
 
     下面仅作数值示例: 假设 $p,q$ 固定, 且在 $s=3$ 时, $Nq=0.1$. 当 $s$ 增至 $6.3$ 时, 数据量增至原来的 $2.1$ 倍, 相应地, $Nq$ 增至 $0.21$.
 
-    设主密钥长度为 $K$ 比特. 按前述具体子密钥计数模型, 当保留的错误候选占主导时 (正确密钥只有一个), 期望穷搜复杂度约为 $\mathbb{E}[T_{\rm exhaustive}]\approx 2^K\beta$.
+    设主密钥长度为 $K$ 比特. 按前述具体子密钥计数模型, 当保留的错误候选占主导时 (正确密钥只有一个), 期望穷搜复杂度约为 $T_{exhaustive}]\approx 2^K\beta$.
 
     采用泊松近似, 结果如下:
 
@@ -148,4 +148,55 @@ $$
   $$
   \frac{2^{K-h_{st}}}{2^{K-h}}=2^{h-h_{st}}.
   $$
-  当 $h_{st}$ 仍然可以保证穷搜不为主项, state test 不展开（穷搜后展开）对复杂度无影响.
+  **当 $h_{st}$ 仍然可以保证穷搜不为主项, state test 不展开（穷搜后展开）对复杂度无影响.**
+
+----
+
+---
+
+**符号说明**
+
+- $K$: 主密钥长度.
+- $k_1,k_2$: 两部分独立密钥信息的位数. ST 前对 $k_1+k_2$ 比特计数, ST 后只对 $k_1$ 比特计数, 暂不展开 $k_2$.
+- $\theta$: 保留候选所需的最低票数, 为正整数.
+- $e$: ST 前, 单个错误候选的平均计数.
+- $m_e$: 噪声放大位数. ST 后, 单个错误候选的平均计数为 $e'=2^{m_e}e$. (因为密钥计数器为 $k_2$ 建的)
+- $\beta,\beta_{st}$: ST 前后, 单个错误候选通过阈值筛选的概率.
+- $h,h_{st}$: ST 前后, 保留比例对应的缩减比特数. 保留比例分别为 $2^{-h}$ 和 $2^{-h_{st}}$.
+- $T_{exhaustive},T_{exhaustive,st}$: ST 前后的最终穷搜复杂度, 按补全并验证所有保留候选计算.
+- $\operatorname{Pois}(\lambda)$: 均值为 $\lambda$ 的泊松分布.
+
+**比较条件**
+
+固定数据量和阈值 $\theta$, 假设 ST 完整遍历测试状态、不丢失真票, 且放大后的噪声 $e'=2^{m_e}e\ll1$. **此时成功率可以近似保持不变.**
+
+以下采用泊松计数模型. 表中涉及 $\beta,\beta_{st}$ 的数量估算, 要求**保留的错误候选占主导**. $h,h_{st}$ 的允许范围以至少保留一个候选为前提.
+
+| ITEM                     | NO ST                                             | WITH ST, 不展开 $k_2$                                        |
+| ------------------------ | ------------------------------------------------- | ------------------------------------------------------------ |
+| 计数器总数               | $2^{k_1+k_2}$                                     | $2^{k_1}$                                                    |
+| 每个错误计数器的平均噪声 | $e$                                               | $e'=2^{m_e}e$                                                |
+| 单个错误候选的保留概率   | $\beta=\Pr[\operatorname{Pois}(e)\ge\theta]$      | $\beta_{st}=\Pr[\operatorname{Pois}(e')\ge\theta]$           |
+| 保留比例与 $h$ 的关系    | $2^{-h}\approx\beta$                              | $2^{-h_{st}}\approx\beta_{st}$                               |
+| $h$ 的允许范围           | $0\le h\le k_1+k_2$                               | $0\le h_{st}\le k_1$                                         |
+| 保留候选数               | $2^{k_1+k_2-h}$                                   | $2^{k_1-h_{st}}$                                             |
+| 每个候选的补全成本       | $2^{K-k_1-k_2}$                                   | $2^{K-k_1}$                                                  |
+| **最终穷搜复杂度**       | **$T_{exhaustive}\approx2^{K-h}\approx2^K\beta$** | **$T_{exhaustive,st}\approx2^{K-h_{st}}\approx2^K\beta_{st}$** |
+
+**$h_{st}$ 与 $h$ 的数量关系**
+
+在相同阈值下, 噪声增大使错误候选的保留概率增大, 即 $\beta_{st}\ge\beta$. 在上述错误候选占主导的条件下, 对应 $h_{st}\le h$ ($T_{exhaustive}=2^{K-h}$), 且
+
+$$
+h-h_{\rm st}\approx\log_2\frac{\beta_{\rm st}}{\beta},
+\qquad
+\frac{T_{\rm exhaustive,st}}{T_{\rm exhaustive}}\approx\frac{\beta_{\rm st}}{\beta}.
+$$
+
+在 $e'=2^{m_e}e\ll1$ 时, 泊松概率满足 $\beta\approx e^\theta/\theta!$ 和 $\beta_{st}\approx(e')^\theta/\theta!$, 因此
+
+$$
+\boxed{\beta_{\rm st}\approx2^{\theta m_e}\beta,\qquad h_{\rm st}\approx h-\theta m_e,\qquad T_{\rm exhaustive,st}\approx2^{\theta m_e}T_{\rm exhaustive}.}
+$$
+
+在**保持相同目标成功率** ($\theta$) 的前提下, 若 $2^{K-h}$ 和 $2^{K-h_{st}}$ 均不占各自总时间复杂度的主导地位, 则**不展开 state test 带来的额外穷搜开销不会改变总时间复杂度的主导项**.
